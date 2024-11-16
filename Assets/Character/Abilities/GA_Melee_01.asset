@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857e1987642a79c438677d0a63ba3344, type: 3}
+  m_Name: GA_Melee_01
+  m_EditorClassIdentifier: 
+  inputAction: {fileID: 7065405839081617412, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  activateOnGranted: 0
+  abilityName: Melee_01
+  cooldown: 0.5
+  abilityCost:
+    attribute: 
+    amount: 0
+  abilityAnimation: {fileID: 7400000, guid: a0d094d6163db384997f8f44f9ae8ab2, type: 2}
+  appliedEffects:
+  - {fileID: 11400000, guid: 7d27f6410eda1644b8090d026bb7d81d, type: 2}
+  grantedEffects: []
+  gameplayEffect: {fileID: 11400000, guid: 119aae5e50aca9c4690b47a7e3ac5a24, type: 2}
+  maxTargetCount: 1
+  meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
+  startVFXPrefab: {fileID: 0}
+  collisionSpawnOffset: {x: 0, y: 0}
