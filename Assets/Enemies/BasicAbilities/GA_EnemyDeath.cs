@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Enemies.BasicAbilities
 {
     [CreateAssetMenu(fileName = "EnemyDeath", menuName = "Abilities/Enemy/Death")]
-    public class GA_EnemyDeath : AbilityBase
+    public class GA_EnemyDeath : GameplayAbilityBase
     {
         private AbilitySystemComponent _abilitySystemComponent;
 
@@ -32,11 +32,15 @@ namespace Enemies.BasicAbilities
         protected override void StartAbility(GameObject user)
         {
             base.StartAbility(user);
+            
+            // Do whatever needs to be done (ie. Effects, etc.)
+            
+            EndAbility();
         }
 
-        protected override void EndAbility(GameObject user)
+        protected override void EndAbility()
         {
-            base.EndAbility(user);
+            base.EndAbility();
             //AbilitySystemLogger.Log("On Death End!");
             Destroy(_abilitySystemComponent.gameObject);
         }

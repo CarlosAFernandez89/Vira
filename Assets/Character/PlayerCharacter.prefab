@@ -190,6 +190,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8944b90b5b58a47858097916c7a49b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultHealth:
+    baseValue: 5
+    minValue: 0
+    maxValue: 5
+  defaultMana:
+    baseValue: 10
+    minValue: 0
+    maxValue: 10
   attributes: []
 --- !u!114 &7893141768364633138
 MonoBehaviour:
@@ -206,7 +214,12 @@ MonoBehaviour:
   availableAbilities:
   - {fileID: 11400000, guid: 35c9b13a17c1a81499faa01e3a91cd93, type: 2}
   - {fileID: 11400000, guid: 5314d22d40a464f40844763293ba9b98, type: 2}
+  - {fileID: 11400000, guid: 53b2a0f0bb4b8624b96b3104336b479f, type: 2}
   gameplayEffects: []
+  DefaultTags:
+    m_SerializedExplicitTags: []
+  AppliedTags:
+    m_SerializedExplicitTags: []
 --- !u!114 &1779894667472304493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +267,6 @@ MonoBehaviour:
   feetCollider: {fileID: 1731095099820618004}
   bodyCollider: {fileID: 2992057671901138928}
   moveAction: {fileID: -9007679612043149234, guid: da0199a659141034ea6865f786ee50ea, type: 3}
-  fireAction: {fileID: 7065405839081617412, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   jumpAction: {fileID: -208616579907308178, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   isFacingRight: 0
   cameraFollowGameObject: {fileID: 0}

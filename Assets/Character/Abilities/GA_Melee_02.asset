@@ -22,6 +22,7 @@ MonoBehaviour:
   abilityAnimation: {fileID: 7400000, guid: a2ad24339f14bbc4996c146161497c6c, type: 2}
   appliedEffects: []
   grantedEffects: []
+  gameplayTag: {}
   gameplayEffect: {fileID: 11400000, guid: 119aae5e50aca9c4690b47a7e3ac5a24, type: 2}
   maxTargetCount: 1
   meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}

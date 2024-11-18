@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BandoWare.GameplayTags;
 using GameplayAbilitySystem.Abilities;
 using GameplayAbilitySystem.Attributes;
 using GameplayAbilitySystem.GameplayEffects;
@@ -13,14 +14,18 @@ namespace GameplayAbilitySystem
         // List of available abilities
     
         [NonSerialized]  public AttributesComponent attributesComponent;
-        [SerializeField] public List<AbilityBase> availableAbilities = new List<AbilityBase>();
+        [SerializeField] public List<GameplayAbilityBase> availableAbilities = new List<GameplayAbilityBase>();
         [SerializeField] public List<GameplayEffectBase> gameplayEffects = new List<GameplayEffectBase>();
 
         // Dictionary to track cooldowns (ability name -> time remaining)
-        private Dictionary<AbilityBase, float> _abilityCooldowns = new Dictionary<AbilityBase, float>();
+        private Dictionary<GameplayAbilityBase, float> _abilityCooldowns = new Dictionary<GameplayAbilityBase, float>();
 
-        public GameplayTag GameplayTags { get; private set; } = new GameplayTag();
-
+        [Header("Gameplay Tags")]
+        [SerializeField] protected internal GameplayTagContainer DefaultTags = new GameplayTagContainer();
+        [SerializeField] protected internal GameplayTagContainer AppliedTags = new GameplayTagContainer();
+        private GameplayTagContainer BlockedAbilities = new GameplayTagContainer();
+        
+        
         private void Awake()
         {
             if (attributesComponent == null)
@@ -67,24 +72,24 @@ namespace GameplayAbilitySystem
         }
     
         // Method to grant an ability
-        public void GrantAbility(AbilityBase ability)
+        public void GrantAbility(GameplayAbilityBase gameplayAbility)
         {
-            if (!availableAbilities.Contains(ability))
+            if (!availableAbilities.Contains(gameplayAbility))
             {
-                availableAbilities.Add(ability);
-                BindInputAction(ability);
-                ability.OnAbilityGranted(this);
+                availableAbilities.Add(gameplayAbility);
+                BindInputAction(gameplayAbility);
+                gameplayAbility.OnAbilityGranted(this);
             }
         }
     
         // Method to unbind input actions when abilities are removed
-        public void RemoveAbility(AbilityBase ability)
+        public void RemoveAbility(GameplayAbilityBase gameplayAbility)
         {
-            if (availableAbilities.Contains(ability))
+            if (availableAbilities.Contains(gameplayAbility))
             {
-                availableAbilities.Remove(ability);
-                UnbindInputAction(ability);
-                ability.OnAbilityRemoved(this);
+                availableAbilities.Remove(gameplayAbility);
+                UnbindInputAction(gameplayAbility);
+                gameplayAbility.OnAbilityRemoved(this);
             }
         }
     
@@ -154,41 +159,41 @@ namespace GameplayAbilitySystem
         }
     
         // Method to bind input actions to abilities
-        private void BindInputAction(AbilityBase ability)
+        private void BindInputAction(GameplayAbilityBase gameplayAbility)
         {
-            if (!ability.activateOnGranted && ability.inputAction != null)
+            if (!gameplayAbility.activateOnGranted && gameplayAbility.inputAction != null)
             {
-                ability.inputAction.action.Enable();
-                ability.inputAction.action.performed += ctx => ability.Activate(gameObject);
+                gameplayAbility.inputAction.action.Enable();
+                gameplayAbility.inputAction.action.performed += ctx => gameplayAbility.Activate(gameObject);
             }
         }
     
         // Method to unbind input actions
-        private void UnbindInputAction(AbilityBase ability)
+        private void UnbindInputAction(GameplayAbilityBase gameplayAbility)
         {
-            if (!ability.activateOnGranted && ability.inputAction != null)
+            if (!gameplayAbility.activateOnGranted && gameplayAbility.inputAction != null)
             {
-                ability.inputAction.action.performed -= ctx => ability.Activate(gameObject);
-                ability.inputAction.action.Disable();
+                gameplayAbility.inputAction.action.performed -= ctx => gameplayAbility.Activate(gameObject);
+                gameplayAbility.inputAction.action.Disable();
             }
         }
 
         // Attempts to activate an ability
-        public bool TryActivateAbility(AbilityBase ability)
+        public bool TryActivateAbility(GameplayAbilityBase gameplayAbility)
         {
             // Check if ability exists in list and is off cooldown
-            if (!availableAbilities.Contains(ability) || IsAbilityOnCooldown(ability) || HasGameplayTag()) return false;
+            if (!availableAbilities.Contains(gameplayAbility) || IsAbilityOnCooldown(gameplayAbility)) return false;
 
             // Start cooldown
-            StartCooldown(ability);
+            StartCooldown(gameplayAbility);
 
             return true;
         }
 
         // Check if an ability is on cooldown
-        private bool IsAbilityOnCooldown(AbilityBase ability)
+        private bool IsAbilityOnCooldown(GameplayAbilityBase gameplayAbility)
         {
-            if (_abilityCooldowns.ContainsKey(ability) && _abilityCooldowns[ability] > 0)
+            if (_abilityCooldowns.ContainsKey(gameplayAbility) && _abilityCooldowns[gameplayAbility] > 0)
             {
                 //Debug.Log(ability.name + " is on cooldown.");
                 return true;
@@ -196,24 +201,20 @@ namespace GameplayAbilitySystem
 
             return false;
         }
-
-        private bool HasGameplayTag()
-        {
-            return GameplayTags.HasTag("Ability");
-        }
+        
 
         // Start cooldown for an ability
-        private void StartCooldown(AbilityBase ability)
+        private void StartCooldown(GameplayAbilityBase gameplayAbility)
         {
-            _abilityCooldowns[ability] = ability.cooldown;
-            ability.StartCooldown(gameObject);
-            StartCoroutine(CooldownRoutine(ability));
+            _abilityCooldowns[gameplayAbility] = gameplayAbility.cooldown;
+            gameplayAbility.StartCooldown(gameObject);
+            StartCoroutine(CooldownRoutine(gameplayAbility));
         }
 
         // Coroutine to handle cooldown timing
-        private IEnumerator CooldownRoutine(AbilityBase ability)
+        private IEnumerator CooldownRoutine(GameplayAbilityBase gameplayAbility)
         {
-            float remainingCooldown = ability.cooldown;
+            float remainingCooldown = gameplayAbility.cooldown;
 
             while (remainingCooldown > 0)
             {
@@ -221,7 +222,7 @@ namespace GameplayAbilitySystem
                 remainingCooldown -= Time.deltaTime;
             
                 // Update the dictionary with the new remaining cooldown value
-                _abilityCooldowns[ability] = Mathf.Max(remainingCooldown, 0); // Ensure it doesn't go negative
+                _abilityCooldowns[gameplayAbility] = Mathf.Max(remainingCooldown, 0); // Ensure it doesn't go negative
             
                 // Yield until the next frame
                 yield return null; // This will pause the coroutine until the next frame
@@ -231,8 +232,116 @@ namespace GameplayAbilitySystem
             remainingCooldown = 0;
 
             // Call the cooldown end event
-            ability.EndCooldown(gameObject); // Notify that cooldown has ended
+            gameplayAbility.EndCooldown(gameObject); // Notify that cooldown has ended
         }
-    
+
+        public void CancelAllAbilitiesWithGameplayTag(GameplayTag gameplayTag)
+        {
+            foreach (GameplayAbilityBase ability in availableAbilities)
+            {
+                foreach (GameplayTag tempTag in ability.AbilityTags.GetTags())
+                {
+                    if (tempTag == gameplayTag)
+                    {
+                        ability.ForceEndAbility();
+                    }
+                }
+            }
+        }
+
+        public bool HasRequiredGameplayTags(GameplayTagContainer gameplayTagContainer)
+        {
+            // Iterate over each tag in the passed container
+            foreach (GameplayTag requiredTag in gameplayTagContainer.GetTags())
+            {
+                // Check if the tag is not found in either DefaultTags or AppliedTags
+                bool tagFound = false;
+
+                // Check in DefaultTags
+                foreach (GameplayTag defaultTag in DefaultTags.GetTags())
+                {
+                    if (requiredTag == defaultTag)
+                    {
+                        tagFound = true;
+                        break; // Exit once the tag is found
+                    }
+                }
+
+                // Check in AppliedTags if not found in DefaultTags
+                if (!tagFound)
+                {
+                    foreach (GameplayTag appliedTag in AppliedTags.GetTags())
+                    {
+                        if (requiredTag == appliedTag)
+                        {
+                            tagFound = true;
+                            break; // Exit once the tag is found
+                        }
+                    }
+                }
+
+                // If any required tag is not found, return false
+                if (!tagFound)
+                {
+                    return false;
+                }
+            }
+
+            // If all required tags are found, return true
+            return true;
+        }
+
+        public bool HasBlockedGameplayTags(GameplayTagContainer gameplayTagContainer)
+        {
+            // Iterate over each tag in the passed container
+            foreach (GameplayTag blockedTag in gameplayTagContainer.GetTags())
+            {
+                // Check if the tag is found in either DefaultTags or AppliedTags
+                foreach (GameplayTag defaultTag in DefaultTags.GetTags())
+                {
+                    if (blockedTag == defaultTag)
+                    {
+                        return false; // Return false immediately if any tag is found
+                    }
+                }
+
+                foreach (GameplayTag appliedTag in AppliedTags.GetTags())
+                {
+                    if (blockedTag == appliedTag)
+                    {
+                        return false; // Return false immediately if any tag is found
+                    }
+                }
+            }
+
+            // If none of the blocked tags are found, return true
+            return true;
+        }
+        
+        public bool IsAbilityBlocked(GameplayTagContainer tags)
+        {
+            foreach (GameplayTag gameplayTag in BlockedAbilities.GetTags())
+            {
+                foreach (GameplayTag gameplayTag1 in tags)
+                {
+                    if (gameplayTag1.Equals(gameplayTag))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        
+        public void AddBlockedAbilities(GameplayTagContainer tags)
+        {
+            BlockedAbilities.AddTags(tags);
+        }
+
+        public void RemoveBlockedAbilities(GameplayTagContainer tags)
+        {
+            BlockedAbilities.RemoveTags(tags);
+        }
     }
 }

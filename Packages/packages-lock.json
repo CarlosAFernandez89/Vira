@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.bandoware.gameplaytags": {
+      "version": "https://github.com/BandoWare/GameplayTags.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "e6e13f33564fe463e9adbbc9356bd9ec472a29ec"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.3",
       "depth": 1,

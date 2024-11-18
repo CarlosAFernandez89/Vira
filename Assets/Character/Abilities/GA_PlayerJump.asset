@@ -7,28 +7,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 857e1987642a79c438677d0a63ba3344, type: 3}
-  m_Name: GA_Melee_01
+  m_Script: {fileID: 11500000, guid: 0ba1e1516bd7d4944b8f799d82b1e5d3, type: 3}
+  m_Name: GA_PlayerJump
   m_EditorClassIdentifier: 
-  inputAction: {fileID: 7065405839081617412, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  inputAction: {fileID: -208616579907308178, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   activateOnGranted: 0
-  abilityName: Melee_01
-  cooldown: 0.5
+  abilityName: Jump
+  cooldown: 0
   abilityCost:
     attribute: 
     amount: 0
-  abilityAnimation: {fileID: 7400000, guid: a0d094d6163db384997f8f44f9ae8ab2, type: 2}
+  abilityAnimation: {fileID: 0}
   AbilityTags:
     m_SerializedExplicitTags:
-    - Ability.Melee
+    - Ability.Jump
   CancelAbilitiesWithTag:
     m_SerializedExplicitTags: []
   BlockAbilitiesWithTag:
     m_SerializedExplicitTags: []
   ActivationOwnedTags:
-    m_SerializedExplicitTags: []
+    m_SerializedExplicitTags:
+    - Ability.Jump
   ActivationRequiredTags:
     m_SerializedExplicitTags: []
   ActivationBlockedTags:
@@ -41,11 +42,13 @@ MonoBehaviour:
     m_SerializedExplicitTags: []
   TargetBlockedTags:
     m_SerializedExplicitTags: []
-  appliedEffects:
-  - {fileID: 11400000, guid: 7d27f6410eda1644b8090d026bb7d81d, type: 2}
+  appliedEffects: []
   grantedEffects: []
-  gameplayEffect: {fileID: 11400000, guid: 119aae5e50aca9c4690b47a7e3ac5a24, type: 2}
-  maxTargetCount: 1
-  meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
-  startVFXPrefab: {fileID: 0}
-  collisionSpawnOffset: {x: 0, y: 0}
+  groundCheckDistance: 0.02
+  headCheckDistance: 0.02
+  headWidth: 0.75
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  bDebugShowIsGroundedBox: 0
+  bDebugShowIsCeilingBox: 0

@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 namespace GameplayAbilitySystem.Abilities
 {
     [CreateAssetMenu(fileName = "New Melee Ability", menuName = "Abilities/Melee Ability")]
-    public class MeleeBase : AbilityBase
+    public class MeleeBase : GameplayAbilityBase
     {
         [Header("Melee Base")]
         [SerializeField] public GameplayEffectBase gameplayEffect;
@@ -19,7 +19,6 @@ namespace GameplayAbilitySystem.Abilities
 
         private void OnEnable()
         {
-            AddTag("Ability.Melee");
         }
 
         protected override void StartAbility(GameObject user)
@@ -75,9 +74,9 @@ namespace GameplayAbilitySystem.Abilities
         }
         
 
-        protected override void EndAbility(GameObject user)
+        protected override void EndAbility()
         {
-            base.EndAbility(user);
+            base.EndAbility();
         }
 
         protected override void ApplyCost(GameObject user)

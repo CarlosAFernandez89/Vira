@@ -1,3 +1,4 @@
+using GameplayAbilitySystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,7 +22,6 @@ namespace Character
         [SerializeField] private Collider2D feetCollider;
         [SerializeField] private Collider2D bodyCollider;
         [SerializeField] private InputActionReference moveAction;
-        [SerializeField] private InputActionReference fireAction;
         [SerializeField] private InputActionReference jumpAction;
         
         //Movement
@@ -57,6 +57,8 @@ namespace Character
         private CameraFollow _cameraFollow;
         
         private float _fallSpeedYDampingChangeThreshold;
+        
+        private AbilitySystemComponent _abilitySystemComponent;
 
         #endregion
         
@@ -251,7 +253,7 @@ namespace Character
 
         private void JumpChecks()
         {
-            if (_isJumping)
+            if (_isJumping) // _abilitySystemComponent.GameplayTags.HasTag("Ability.Jump")
             {
                 if (_bumpedHead)
                 {
