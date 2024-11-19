@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UXML/MainMenu.uss?fileID=7433441132597879392&amp;guid=f6c6c0bafc4b9e64795410c183787c4a&amp;type=3#MainMenu" />
+    <ui:VisualElement name="Panel" class="panel" style="background-image: none;">
+        <ui:VisualElement name="TitleSection" class="title-section">
+            <ui:Label text="GAME NAME" class="title-label" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Menu" class="menu">
+            <ui:Button text="Start Game" name="StartButton" class="menu-button" />
+            <ui:Button text="Options" name="OptionsButton" class="menu-button" />
+            <ui:Button text="Achievements" name="AchievementsButton" class="menu-button" />
+            <ui:Button text="Extras" name="ExtrasButton" class="menu-button" />
+            <ui:Button text="Quit Game" name="QuitButton" class="menu-button" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Footer" class="footer">
+            <ui:Label text="0.0.0.1" name="VersionNumber" class="version-label" />
+            <ui:VisualElement name="CompanyLogo" class="company-logo" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

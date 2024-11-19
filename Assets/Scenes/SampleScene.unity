@@ -6157,22 +6157,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 7893141768364633138, guid: 86c279c3b446a9d44a6ba5bb492ae0f9, type: 3}
-      propertyPath: AppliedTags.m_SerializedExplicitTags.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7893141768364633138, guid: 86c279c3b446a9d44a6ba5bb492ae0f9, type: 3}
-      propertyPath: DefaultTags.m_SerializedExplicitTags.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7893141768364633138, guid: 86c279c3b446a9d44a6ba5bb492ae0f9, type: 3}
-      propertyPath: 'AppliedTags.m_SerializedExplicitTags.Array.data[0]'
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7893141768364633138, guid: 86c279c3b446a9d44a6ba5bb492ae0f9, type: 3}
-      propertyPath: 'DefaultTags.m_SerializedExplicitTags.Array.data[0]'
-      value: Player
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
