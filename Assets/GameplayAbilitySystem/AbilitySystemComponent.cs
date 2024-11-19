@@ -6,6 +6,7 @@ using GameplayAbilitySystem.Abilities;
 using GameplayAbilitySystem.Attributes;
 using GameplayAbilitySystem.GameplayEffects;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GameplayAbilitySystem
 {
@@ -25,7 +26,8 @@ namespace GameplayAbilitySystem
         [SerializeField] protected internal GameplayTagContainer AppliedTags = new GameplayTagContainer();
         private GameplayTagContainer BlockedAbilities = new GameplayTagContainer();
         
-        
+        private readonly Dictionary<GameplayAbilityBase, System.Action<InputAction.CallbackContext>> _delegateHandlers = new();
+
         private void Awake()
         {
             if (attributesComponent == null)
@@ -51,8 +53,8 @@ namespace GameplayAbilitySystem
             {
                 var clonedAbility = ScriptableObjectUtility.Clone(availableAbilities[i]);
                 availableAbilities[i] = clonedAbility;
-                BindInputAction(availableAbilities[i]);
                 availableAbilities[i].OnAbilityGranted(this);
+                BindInputAction(availableAbilities[i]);
             }
 
             foreach (var gameplayEffect in gameplayEffects)
@@ -163,18 +165,23 @@ namespace GameplayAbilitySystem
         {
             if (!gameplayAbility.activateOnGranted && gameplayAbility.inputAction != null)
             {
+                var handler = new System.Action<InputAction.CallbackContext>(ctx => gameplayAbility.Activate(gameObject));
+                _delegateHandlers[gameplayAbility] = handler;
+
                 gameplayAbility.inputAction.action.Enable();
-                gameplayAbility.inputAction.action.performed += ctx => gameplayAbility.Activate(gameObject);
+                gameplayAbility.inputAction.action.performed += handler;
             }
         }
     
         // Method to unbind input actions
         private void UnbindInputAction(GameplayAbilityBase gameplayAbility)
         {
-            if (!gameplayAbility.activateOnGranted && gameplayAbility.inputAction != null)
+            if (!gameplayAbility.activateOnGranted && gameplayAbility.inputAction != null && 
+                _delegateHandlers.TryGetValue(gameplayAbility, out var handler))
             {
-                gameplayAbility.inputAction.action.performed -= ctx => gameplayAbility.Activate(gameObject);
+                gameplayAbility.inputAction.action.performed -= handler;
                 gameplayAbility.inputAction.action.Disable();
+                _delegateHandlers.Remove(gameplayAbility);
             }
         }
 

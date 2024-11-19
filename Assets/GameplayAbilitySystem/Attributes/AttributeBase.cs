@@ -23,6 +23,7 @@ namespace GameplayAbilitySystem.Attributes
         public float maxValue; // Max value of the attribute
         
         public event Action<float> OnValueChanged;
+        public event Action<float> OnMaxValueChanged;
         public event Action OnZeroReached;
 
         public float BaseValue
@@ -54,7 +55,11 @@ namespace GameplayAbilitySystem.Attributes
         public float MaxValue
         {
             get => maxValue;
-            set => maxValue = Mathf.Clamp(value, minValue, value);
+            set
+            {
+                maxValue = Mathf.Clamp(value, minValue, value);
+                OnMaxValueChanged?.Invoke(maxValue);
+            }
         }
 
         public AttributeBase(string name, float baseValue, float minValue, float maxValue)

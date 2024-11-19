@@ -17,7 +17,35 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 88588a875a17a8740b1d18d5b5e4cc0d, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 234213148921856
+    m_Localized: ES Play Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235845030973440
+    m_Localized: ES Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235928657006592
+    m_Localized: ES Achievements
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235991634481152
+    m_Localized: ES Extras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236083573624832
+    m_Localized: ES Quit Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288529733849088
+    m_Localized: ES Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288686055559168
+    m_Localized: ES Main Menu
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

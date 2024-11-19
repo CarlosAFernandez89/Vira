@@ -104,6 +104,8 @@ namespace Character.Abilities
 
         private void GroundCheck()
         {
+            if (_feetCollider == null || _bodyCollider == null) return;
+            
             Vector2 boxCastOrigin = new Vector2(_feetCollider.bounds.center.x, _feetCollider.bounds.min.y);
             Vector2 boxCastSize = new Vector2(_feetCollider.bounds.size.x, groundCheckDistance);
 
@@ -137,6 +139,8 @@ namespace Character.Abilities
 
         private void CeilingCheck()
         {
+            if(_feetCollider == null || _bodyCollider == null) return;
+            
             Vector2 boxCastOrigin = new Vector2(_feetCollider.bounds.center.x, _bodyCollider.bounds.max.y);
             Vector2 boxCastSize = new Vector2(_feetCollider.bounds.size.x * headWidth, headCheckDistance);
 

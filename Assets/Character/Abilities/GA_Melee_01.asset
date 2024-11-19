@@ -17,8 +17,8 @@ MonoBehaviour:
   abilityName: Melee_01
   cooldown: 0.5
   abilityCost:
-    attribute: 
-    amount: 0
+    attribute: Mana
+    amount: 1
   abilityAnimation: {fileID: 7400000, guid: a0d094d6163db384997f8f44f9ae8ab2, type: 2}
   AbilityTags:
     m_SerializedExplicitTags:

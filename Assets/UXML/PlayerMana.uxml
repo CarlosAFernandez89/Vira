@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UXML/PlayerMana.uss?fileID=7433441132597879392&amp;guid=60486ed2e60ef8a4cbc502c835f2363c&amp;type=3#PlayerMana" />
+    <Character.UI.PlayerMana progress="0.67" lerp-speed-multiplier="3" class="blue" style="align-items: stretch; align-content: flex-start; align-self: center; justify-content: space-evenly; flex-direction: column; height: 150px; display: flex; visibility: visible; overflow: visible; width: 150px; position: relative; top: 0; left: 0; right: 0; bottom: 0;">
+        <Bindings>
+            <ui:DataBinding property="Progress" data-source-path="manaPercentage" data-source-type="Character.UI.PlayerManaController, Assembly-CSharp" binding-mode="ToTarget" />
+        </Bindings>
+    </Character.UI.PlayerMana>
+</ui:UXML>

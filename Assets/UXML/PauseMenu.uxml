@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UXML/PauseMenu.uss?fileID=7433441132597879392&amp;guid=ee6fc5c7bc4051b4fa2ed9404f1983b0&amp;type=3#PauseMenu" />
+    <ui:VisualElement name="PauseMenu" class="pause-menu">
+        <ui:Label name="PauseTitle" class="pause-title" />
+        <LocalizedButton name="ResumeButton" key="pausemenu-pause" class="menu-button" />
+        <LocalizedButton name="QuitButton" key="pausemenu-quit" class="menu-button" />
+    </ui:VisualElement>
+</ui:UXML>

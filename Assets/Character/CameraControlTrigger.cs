@@ -1,7 +1,10 @@
 using System;
 using Unity.Cinemachine;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Character
 {
@@ -86,7 +89,9 @@ namespace Character
         Left,
         Right
     }
-
+    
+#if UNITY_EDITOR
+    
     [CustomEditor(typeof(CameraControlTrigger))]
     public class CameraControlTriggerEditor : Editor
     {
@@ -134,4 +139,5 @@ namespace Character
             }
         }
     }
+#endif
 }

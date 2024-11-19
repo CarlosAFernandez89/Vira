@@ -27,8 +27,8 @@ MonoBehaviour:
   jumpHeightCompensationFactor: 1.05
   timeUntilJumpApex: 0.45
   gravityOnReleaseMultiplier: 1.56
-  maxFallSpeed: 26
-  numberOfJumpsAllowed: 2
+  maxFallSpeed: 24
+  numberOfJumpsAllowed: 1
   timeForUpwardsCancel: 0.027
   apexThreshold: 0.82
   apexHangTime: 0.075

@@ -13,13 +13,14 @@ namespace Character.UI
 
         public Transform healthParent;
         public GameObject healthPrefab;
+        
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             _player = GameObject.FindGameObjectWithTag("Player");
             
             int maxHealth = 
-                (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Health").maxValue;
+                (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Health").MaxValue;
             
             int currentHealth = 
                 (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Health").CurrentValue;
@@ -30,13 +31,7 @@ namespace Character.UI
             _player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Health").OnValueChanged += UpdateHealthHUD;
             InstantiateHealthContainers();
             UpdateHealthHUD(currentHealth);
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            
         }
 
         void SetHealthContainers()

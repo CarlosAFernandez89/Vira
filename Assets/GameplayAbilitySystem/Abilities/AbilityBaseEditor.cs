@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using GameplayAbilitySystem.GameplayEffects;
 using UnityEditor;
 using UnityEngine;
@@ -67,3 +68,4 @@ namespace GameplayAbilitySystem.Abilities
         }
     }
 }
+#endif

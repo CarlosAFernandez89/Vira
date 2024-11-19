@@ -1,15 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UXML/MainMenu.uss?fileID=7433441132597879392&amp;guid=f6c6c0bafc4b9e64795410c183787c4a&amp;type=3#MainMenu" />
+    <Style src="project://database/Assets/UXML/PlayerMana.uss?fileID=7433441132597879392&amp;guid=60486ed2e60ef8a4cbc502c835f2363c&amp;type=3#PlayerMana" />
     <ui:VisualElement name="Panel" class="panel" style="background-image: none;">
         <ui:VisualElement name="TitleSection" class="title-section">
             <ui:Label text="GAME NAME" class="title-label" />
         </ui:VisualElement>
         <ui:VisualElement name="Menu" class="menu">
-            <ui:Button text="Start Game" name="StartButton" class="menu-button" />
-            <ui:Button text="Options" name="OptionsButton" class="menu-button" />
-            <ui:Button text="Achievements" name="AchievementsButton" class="menu-button" />
-            <ui:Button text="Extras" name="ExtrasButton" class="menu-button" />
-            <ui:Button text="Quit Game" name="QuitButton" class="menu-button" />
+            <LocalizedButton key="mainmenu-playgame" name="PlayButton" text="Play Game" class="menu-button" style="width: 300px; height: 50px; background-color: rgba(0, 0, 0, 0);" />
+            <LocalizedButton key="mainmenu-options" name="OptionsButton" text="Options" class="menu-button" style="width: 300px; height: 50px; background-color: rgba(0, 0, 0, 0);" />
+            <LocalizedButton key="mainmenu-achievements" name="AchievementsButton" text="Achievements" class="menu-button" style="width: 300px; height: 50px; background-color: rgba(0, 0, 0, 0);" />
+            <LocalizedButton key="mainmenu-extras" name="ExtrasButton" text="Extras" class="menu-button" style="width: 300px; height: 50px; background-color: rgba(0, 0, 0, 0);" />
+            <LocalizedButton key="mainmenu-quitgame" name="QuitButton" text="Quit Game" class="menu-button" style="width: 300px; height: 50px; background-color: rgba(0, 0, 0, 0);" />
         </ui:VisualElement>
         <ui:VisualElement name="Footer" class="footer">
             <ui:Label text="0.0.0.1" name="VersionNumber" class="version-label" />

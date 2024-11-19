@@ -14,7 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: LocaleStringTableCollection
   m_TableCollectionNameGuidString: 88588a875a17a8740b1d18d5b5e4cc0d
-  m_Entries: []
+  m_Entries:
+  - m_Id: 288529733849088
+    m_Key: pausemenu-pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288686055559168
+    m_Key: pausemenu-quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236083573624832
+    m_Key: mainmenu-quitgame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 234213148921856
+    m_Key: mainmenu-playgame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235845030973440
+    m_Key: mainmenu-options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235991634481152
+    m_Key: mainmenu-extras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235928657006592
+    m_Key: mainmenu-achievements
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
