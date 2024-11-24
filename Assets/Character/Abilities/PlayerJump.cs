@@ -83,7 +83,12 @@ namespace Character.Abilities
         {
             base.ApplyCost(user);
         }
-        
+
+        protected override void HandleAnimationEvent(string eventName)
+        {
+            
+        }
+
         private IEnumerator JumpCollisionChecksOnTick()
         {
             while (true)

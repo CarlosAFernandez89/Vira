@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5362446173105140615}
   m_Layer: 0
   m_Name: CameraFollow
-  m_TagString: Untagged
+  m_TagString: FollowCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67e5f6c024f5d94daf42ea35e0a604a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
   flipYRotationTime: 0.5
 --- !u!1 &1514657502922745958
 GameObject:

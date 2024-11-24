@@ -11,6 +11,71 @@ using UnityEngine.Serialization;
 
 namespace GameplayAbilitySystem.Abilities
 {
+    // Interface for abilities that can receive animation events
+    public interface IAnimationEventListener
+    {
+        void OnAbilityAnimationEvent(string eventName);
+    }
+
+    // Class to track active ability instances
+    public class AbilityAnimationManager : MonoBehaviour
+    {
+        // Singleton instance
+        public static AbilityAnimationManager Instance { get; private set; }
+
+        // Dictionary to track active abilities per game object
+        private Dictionary<GameObject, HashSet<IAnimationEventListener>> activeAbilities 
+            = new Dictionary<GameObject, HashSet<IAnimationEventListener>>();
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        // Register an active ability instance
+        public void RegisterAbility(GameObject owner, IAnimationEventListener ability)
+        {
+            if (!activeAbilities.ContainsKey(owner))
+            {
+                activeAbilities[owner] = new HashSet<IAnimationEventListener>();
+            }
+            activeAbilities[owner].Add(ability);
+        }
+
+        // Unregister an ability instance
+        public void UnregisterAbility(GameObject owner, IAnimationEventListener ability)
+        {
+            if (activeAbilities.ContainsKey(owner))
+            {
+                activeAbilities[owner].Remove(ability);
+                if (activeAbilities[owner].Count == 0)
+                {
+                    activeAbilities.Remove(owner);
+                }
+            }
+        }
+
+        // Broadcast animation event to all active abilities on an object
+        public void BroadcastAnimationEvent(GameObject owner, string eventName)
+        {
+            if (activeAbilities.TryGetValue(owner, out var abilities))
+            {
+                foreach (var ability in abilities)
+                {
+                    ability.OnAbilityAnimationEvent(eventName);
+                }
+            }
+        }
+    }
+    
     [Serializable]
     public struct AbilityCost
     {
@@ -24,7 +89,7 @@ namespace GameplayAbilitySystem.Abilities
         }
     }
     
-    public abstract class GameplayAbilityBase : ScriptableObject
+    public abstract class GameplayAbilityBase : ScriptableObject, IAnimationEventListener
     {
         private Animator _animator;
         private static readonly int IsAbilityOverride = Animator.StringToHash("isAbilityOverride");
@@ -36,6 +101,7 @@ namespace GameplayAbilitySystem.Abilities
         public float cooldown;
         public AbilityCost abilityCost;
 
+        protected GameObject currentUser;
         private bool _abilityActive = false;
 
         // Events for ability lifecycle that external systems can subscribe to
@@ -221,7 +287,9 @@ namespace GameplayAbilitySystem.Abilities
                     asc.AppliedTags.AddTag(tag);
                 }
 
+                currentUser = user;
                 _abilityActive = true;
+                AbilityAnimationManager.Instance.RegisterAbility(user, this);
             }
             
             // Abstract core action of the ability, implemented by derived classes
@@ -250,7 +318,12 @@ namespace GameplayAbilitySystem.Abilities
                 _animator.SetBool(IsAbilityOverride, false);
             }
 
+            if (currentUser != null)
+            {
+                AbilityAnimationManager.Instance.UnregisterAbility(currentUser, this);
+            }
             _abilityActive = false;
+            currentUser = null;
             OnAbilityEnd?.Invoke();  // Signals that the ability has ended
         }
 
@@ -394,6 +467,28 @@ namespace GameplayAbilitySystem.Abilities
 
             // Check if the state name matches and if the normalized time is >= 1 (indicating completion)
             return stateInfo.IsName(stateName) && stateInfo.normalizedTime >= 1;
+        }
+
+        // Implementation of IAnimationEventListener
+        public virtual void OnAbilityAnimationEvent(string eventName)
+        {
+            if (!_abilityActive) return;
+            
+            // Handle the animation event in the derived ability class
+            HandleAnimationEvent(eventName);
+        }
+
+        // Abstract method to be implemented by specific abilities
+        protected abstract void HandleAnimationEvent(string eventName);
+    }
+    
+    // Animation event broadcaster component
+    public class AbilityAnimationEventBroadcaster : MonoBehaviour
+    {
+        // Called by Animation Events
+        public void BroadcastAnimationEvent(string eventName)
+        {
+            AbilityAnimationManager.Instance.BroadcastAnimationEvent(gameObject, eventName);
         }
     }
 }

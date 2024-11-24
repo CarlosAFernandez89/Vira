@@ -16,6 +16,7 @@ namespace GameplayAbilitySystem.Abilities
         [SerializeField] public Vector2 collisionSpawnOffset = new Vector2(0f, 0f);
         
         CapsuleCollider2D _capsuleCollider;
+        private GameObject _meleeInstance;
 
         private void OnEnable()
         {
@@ -23,19 +24,91 @@ namespace GameplayAbilitySystem.Abilities
 
         protected override void StartAbility(GameObject user)
         {
-            // Custom VFX logic specific to the Melee Ability
+            base.StartAbility(user);
+
             if (startVFXPrefab != null)
             {
                 GameObject vfxInstance = Instantiate(startVFXPrefab, user.transform.position, Quaternion.identity);
-                Destroy(vfxInstance, 2.0f);  // Adjust based on the VFX duration
+                Destroy(vfxInstance, 2.0f);
             }
-            
-            // Proceed to main action
-            base.StartAbility(user);  // Calls ActivateAbility(user)
+        }
+        
+        protected override void HandleAnimationEvent(string eventName)
+        {
+            switch (eventName)
+            {
+                case "SpawnCollider":
+                    SpawnMeleeCollision();
+                    break;
+                case "DestroyCollider":
+                    DestroyMeleeCollision();
+                    break;
+                case "EndAbility":
+                    EndAbility();
+                    break;
+                // Add more cases as needed
+            }
+        }
+        
+        private void SpawnMeleeCollision()
+        {
+            if (meleeCollisionPrefab != null && currentUser != null)
+            {
+                Vector3 spawnPosition = currentUser.transform.position +
+                                        new Vector3(currentUser.transform.right.x * collisionSpawnOffset.x, 
+                                            collisionSpawnOffset.y, 0);
+
+                _meleeInstance = Instantiate(meleeCollisionPrefab, spawnPosition, Quaternion.identity);
+
+                if (_meleeInstance != null)
+                {
+                    _capsuleCollider = _meleeInstance.GetComponent<CapsuleCollider2D>();
+                    CheckCollisions();
+                }
+            }
+        }
+
+        private void DestroyMeleeCollision()
+        {
+            if (_meleeInstance != null)
+            {
+                Destroy(_meleeInstance);
+                _meleeInstance = null;
+            }
+        }
+        
+        private void CheckCollisions()
+        {
+            if (_capsuleCollider == null) return;
+
+            ContactFilter2D contactFilter = new ContactFilter2D
+            {
+                layerMask = LayerMask.GetMask("AbilityCollision"),
+                useLayerMask = true
+            };
+
+            Collider2D[] collider2Ds = new Collider2D[maxTargetCount];
+            int overlapCount = _capsuleCollider.Overlap(contactFilter, collider2Ds);
+
+            if (overlapCount > 0)
+            {
+                foreach (var collider in collider2Ds)
+                {
+                    if (collider == null) continue;
+                    
+                    AbilitySystemComponent ASC = collider.gameObject.GetComponent<AbilitySystemComponent>();
+                    if (ASC != null)
+                    {
+                        ASC.ApplyEffect(gameplayEffect);
+                    }
+                }
+            }
         }
 
         protected override void ActivateAbility(GameObject user)
         {
+            base.ActivateAbility(user);
+            
             // Main ability action: Spawn a fireball
             if (meleeCollisionPrefab != null)
             {
@@ -76,6 +149,7 @@ namespace GameplayAbilitySystem.Abilities
 
         protected override void EndAbility()
         {
+            DestroyMeleeCollision();
             base.EndAbility();
         }
 

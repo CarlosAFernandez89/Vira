@@ -1,12 +1,8 @@
-using System;
 using Unity.Cinemachine;
+using UnityEditor;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace Character
+namespace Character.Camera
 {
     public class CameraControlTrigger : MonoBehaviour
     {

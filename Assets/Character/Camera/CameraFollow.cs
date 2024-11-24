@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Character
+namespace Character.Camera
 {
     public class CameraFollow : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private Transform playerTransform;
+        private Transform _playerTransform;
 
         [Header("Flip Rotation Stats")] 
         [SerializeField] private float flipYRotationTime = 0.5f;
@@ -16,15 +13,20 @@ namespace Character
         private Coroutine _turnCoroutine;
         
         private PlayerMovement _playerMovement;
+        
 
-        private void Awake()
+        private void Start()
         {
-            _playerMovement = playerTransform.gameObject.GetComponent<PlayerMovement>();
+            if (_playerTransform == null)
+            {
+                _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+                _playerMovement = _playerTransform.gameObject.GetComponent<PlayerMovement>();
+            }
         }
 
         private void Update()
         {
-            transform.position = playerTransform.position;
+            transform.position = _playerTransform.position;
         }
 
         public void CallTurn()

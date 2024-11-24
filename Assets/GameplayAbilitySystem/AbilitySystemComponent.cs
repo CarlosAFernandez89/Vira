@@ -73,7 +73,10 @@ namespace GameplayAbilitySystem
             }
         }
     
-        // Method to grant an ability
+        /// <summary>
+        /// Grants and ability and binds the input of a Gameplay Ability to the AbilitySystemComponent
+        /// </summary>
+        /// <param name="gameplayAbility">Reference to the owners AbilitySystemComponent</param>
         public void GrantAbility(GameplayAbilityBase gameplayAbility)
         {
             if (!availableAbilities.Contains(gameplayAbility))
@@ -84,7 +87,10 @@ namespace GameplayAbilitySystem
             }
         }
     
-        // Method to unbind input actions when abilities are removed
+        /// <summary>
+        /// Removes the ability and unbinds the input of a Gameplay Ability to the AbilitySystemComponent
+        /// </summary>
+        /// <param name="gameplayAbility">Reference to the owners AbilitySystemComponent</param>
         public void RemoveAbility(GameplayAbilityBase gameplayAbility)
         {
             if (availableAbilities.Contains(gameplayAbility))
@@ -96,6 +102,10 @@ namespace GameplayAbilitySystem
         }
     
     
+        /// <summary>
+        /// Applies a gameplay effect to the AbilitySystemComponent
+        /// </summary>
+        /// <param name="effect">The effect to apply</param>
         public void ApplyEffect(GameplayEffectBase effect)
         {
             if (Mathf.Approximately(effect.duration, -1))
@@ -108,6 +118,12 @@ namespace GameplayAbilitySystem
             }
         }
 
+        /// <summary>
+        /// Coroutine to handle the life cycle of the effect.
+        /// Handles the lifetime and applying the actual effects to the attributes.
+        /// Removes the effect when lifetime expires.
+        /// </summary>
+        /// <param name="effect">The effect to apply</param>
         private IEnumerator HandleEffect(GameplayEffectBase effect)
         {
             // Apply the effect immediately based on its attributes
@@ -127,6 +143,10 @@ namespace GameplayAbilitySystem
             RemoveEffect(effect);
         }
     
+        /// <summary>
+        /// Removes GameplayEffect from AbilitySystemComponent
+        /// </summary>
+        /// <param name="effect">The effect to apply</param>
         private void RemoveEffect(GameplayEffectBase effect)
         {
             // Logic to remove the effect from the target

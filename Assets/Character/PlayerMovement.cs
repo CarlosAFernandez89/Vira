@@ -1,3 +1,4 @@
+using Character.Camera;
 using GameplayAbilitySystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,8 +53,6 @@ namespace Character
 
         private float _coyoteTimer;
         
-        
-        [SerializeField] private GameObject cameraFollowGameObject;
         private CameraFollow _cameraFollow;
         
         private float _fallSpeedYDampingChangeThreshold;
@@ -78,14 +77,11 @@ namespace Character
 
         private void Start()
         {
-            _fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
-        }
-
-        private void Awake()
-        {
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _cameraFollow = cameraFollowGameObject.GetComponent<CameraFollow>();
+            var fCam = GameObject.FindWithTag("FollowCamera");
+            _cameraFollow = fCam.GetComponent<CameraFollow>();
             isFacingRight = true;
+            _fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
         }
 
         private void OnDrawGizmos()

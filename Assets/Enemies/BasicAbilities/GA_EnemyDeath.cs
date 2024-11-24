@@ -44,5 +44,10 @@ namespace Enemies.BasicAbilities
             //AbilitySystemLogger.Log("On Death End!");
             Destroy(_abilitySystemComponent.gameObject);
         }
+
+        protected override void HandleAnimationEvent(string eventName)
+        {
+            
+        }
     }
 }
