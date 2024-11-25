@@ -24,7 +24,7 @@ namespace GameplayAbilitySystem.Abilities
         public static AbilityAnimationManager Instance { get; private set; }
 
         // Dictionary to track active abilities per game object
-        private Dictionary<GameObject, HashSet<IAnimationEventListener>> activeAbilities 
+        private Dictionary<GameObject, HashSet<IAnimationEventListener>> _activeAbilities 
             = new Dictionary<GameObject, HashSet<IAnimationEventListener>>();
 
         private void Awake()
@@ -43,22 +43,22 @@ namespace GameplayAbilitySystem.Abilities
         // Register an active ability instance
         public void RegisterAbility(GameObject owner, IAnimationEventListener ability)
         {
-            if (!activeAbilities.ContainsKey(owner))
+            if (!_activeAbilities.ContainsKey(owner))
             {
-                activeAbilities[owner] = new HashSet<IAnimationEventListener>();
+                _activeAbilities[owner] = new HashSet<IAnimationEventListener>();
             }
-            activeAbilities[owner].Add(ability);
+            _activeAbilities[owner].Add(ability);
         }
 
         // Unregister an ability instance
         public void UnregisterAbility(GameObject owner, IAnimationEventListener ability)
         {
-            if (activeAbilities.ContainsKey(owner))
+            if (_activeAbilities.ContainsKey(owner))
             {
-                activeAbilities[owner].Remove(ability);
-                if (activeAbilities[owner].Count == 0)
+                _activeAbilities[owner].Remove(ability);
+                if (_activeAbilities[owner].Count == 0)
                 {
-                    activeAbilities.Remove(owner);
+                    _activeAbilities.Remove(owner);
                 }
             }
         }
@@ -66,9 +66,13 @@ namespace GameplayAbilitySystem.Abilities
         // Broadcast animation event to all active abilities on an object
         public void BroadcastAnimationEvent(GameObject owner, string eventName)
         {
-            if (activeAbilities.TryGetValue(owner, out var abilities))
+            if (_activeAbilities.TryGetValue(owner, out var abilities))
             {
-                foreach (var ability in abilities)
+                // Create a copy of the list to safely iterate over
+                // Its possible that the abilities get removed during the foreach
+                // and we don't want to lock it.
+                var abilitiesCopy = new HashSet<IAnimationEventListener>(abilities);
+                foreach (var ability in abilitiesCopy)
                 {
                     ability.OnAbilityAnimationEvent(eventName);
                 }
@@ -101,7 +105,7 @@ namespace GameplayAbilitySystem.Abilities
         public float cooldown;
         public AbilityCost abilityCost;
 
-        protected GameObject currentUser;
+        protected GameObject CurrentUser;
         private bool _abilityActive = false;
 
         // Events for ability lifecycle that external systems can subscribe to
@@ -257,17 +261,22 @@ namespace GameplayAbilitySystem.Abilities
         // Base methods for each lifecycle stage, which derived classes can override
         protected virtual void StartAbility(GameObject user)
         {
+            // Override the animation state to take in the abilities animation
             if (abilityAnimation != null)
             {
                 _animator = user.GetComponent<Animator>();
                 AnimatorOverrideController overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
                 if (overrideController != null)
                 {
+                    // This name needs to be the name of the default animation added to the state not
+                    // the name of the state itself.
                     overrideController["DudeMonster_MeleeAttack_01"] = abilityAnimation;
+                    
                     _animator.runtimeAnimatorController = overrideController;
                     _animator.SetBool(IsAbilityOverride, true);
 
                     // End ability after animation is done playing. 
+                    // Can also end it from the animation with EndAbility event.
                     CoroutineRunner.Instance.StartRoutine(CallAfterAnimationDone(Mathf.Abs(abilityAnimation.length), user));
                 }
             }
@@ -287,7 +296,7 @@ namespace GameplayAbilitySystem.Abilities
                     asc.AppliedTags.AddTag(tag);
                 }
 
-                currentUser = user;
+                CurrentUser = user;
                 _abilityActive = true;
                 AbilityAnimationManager.Instance.RegisterAbility(user, this);
             }
@@ -297,34 +306,39 @@ namespace GameplayAbilitySystem.Abilities
 
         public void ForceEndAbility()
         {
+            ForceEndAnimation();
             EndAbility();
         }
 
         protected virtual void EndAbility()
         {
-            AbilitySystemComponent asc = GetAbilitySystemComponent();
-            if (asc != null)
+            if (_abilityActive)
             {
-                foreach (var tag in ActivationOwnedTags)
+                AbilitySystemComponent asc = GetAbilitySystemComponent();
+                if (asc != null)
                 {
-                    asc.AppliedTags.RemoveTag(tag);
-                }
-                
-                asc.RemoveBlockedAbilities(BlockAbilitiesWithTag);
-            }
-            
-            if (_animator != null)
-            {
-                _animator.SetBool(IsAbilityOverride, false);
-            }
+                    foreach (var tag in ActivationOwnedTags)
+                    {
+                        asc.AppliedTags.RemoveTag(tag);
+                    }
 
-            if (currentUser != null)
-            {
-                AbilityAnimationManager.Instance.UnregisterAbility(currentUser, this);
+                    asc.RemoveBlockedAbilities(BlockAbilitiesWithTag);
+                }
+
+                if (_animator != null)
+                {
+                    _animator.SetBool(IsAbilityOverride, false);
+                }
+
+                if (CurrentUser != null)
+                {
+                    AbilityAnimationManager.Instance.UnregisterAbility(CurrentUser, this);
+                }
+
+                _abilityActive = false;
+                CurrentUser = null;
+                OnAbilityEnd?.Invoke(); // Signals that the ability has ended
             }
-            _abilityActive = false;
-            currentUser = null;
-            OnAbilityEnd?.Invoke();  // Signals that the ability has ended
         }
 
         protected virtual bool CanActivate(GameObject user)
@@ -457,7 +471,11 @@ namespace GameplayAbilitySystem.Abilities
         {
             yield return new WaitForSeconds(waitTime);
 
-            EndAbility();
+            // We could have ended the ability another way already.
+            if (_abilityActive)
+            {
+                EndAbility();
+            }
         }
 
         private bool IsAnimationDone(Animator animator, string stateName, int layerIndex)
@@ -468,6 +486,21 @@ namespace GameplayAbilitySystem.Abilities
             // Check if the state name matches and if the normalized time is >= 1 (indicating completion)
             return stateInfo.IsName(stateName) && stateInfo.normalizedTime >= 1;
         }
+        
+        protected virtual void ForceEndAnimation()
+        {
+            if (_animator == null) return;
+
+            // Stop the animation by resetting the Animator parameters
+            _animator.SetBool(IsAbilityOverride, false);
+
+            // Optionally, transition to an idle or default state
+            _animator.Play("Idle"); // Replace "Idle" with the name of your default animation state
+
+            // Reset the runtime animator controller if needed
+            _animator.runtimeAnimatorController = _animator.runtimeAnimatorController;
+        }
+
 
         // Implementation of IAnimationEventListener
         public virtual void OnAbilityAnimationEvent(string eventName)

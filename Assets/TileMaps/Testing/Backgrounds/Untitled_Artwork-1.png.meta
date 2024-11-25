@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fd3486a8df9fbd042a8cd770940ebf01
+guid: 8b0feff0d20faec44998c9b60ab4a550
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6529909481953654932
-    second: Rock1_0
+      213: -3739957133524300147
+    second: Untitled_Artwork-1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 10
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Rock1_0
+      name: Untitled_Artwork-1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 8
-        height: 8
+        width: 2040
+        height: 1150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4987d4fa316ee9a50800000000000000
-      internalID: 6529909481953654932
+      spriteID: d8e881d5dc0091cc0800000000000000
+      internalID: -3739957133524300147
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Rock1_0: 6529909481953654932
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

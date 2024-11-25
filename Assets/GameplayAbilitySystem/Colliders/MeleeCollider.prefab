@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7046065954188602550}
   - component: {fileID: 2506818638910635167}
   - component: {fileID: 3481604019090515688}
+  - component: {fileID: -877831405370303001}
   m_Layer: 6
   m_Name: MeleeCollider
   m_TagString: Untagged
@@ -114,7 +115,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 6529909481953654932, guid: fd3486a8df9fbd042a8cd770940ebf01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -125,3 +126,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-877831405370303001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138990350653156065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eb81871e946ce2449b6dd2222848ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

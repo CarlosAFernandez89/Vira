@@ -17,8 +17,8 @@ MonoBehaviour:
   abilityName: Melee_01
   cooldown: 0.5
   abilityCost:
-    attribute: Mana
-    amount: 1
+    attribute: 
+    amount: 0
   abilityAnimation: {fileID: 7400000, guid: a0d094d6163db384997f8f44f9ae8ab2, type: 2}
   AbilityTags:
     m_SerializedExplicitTags:
@@ -48,4 +48,4 @@ MonoBehaviour:
   maxTargetCount: 1
   meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
   startVFXPrefab: {fileID: 0}
-  collisionSpawnOffset: {x: 0, y: 0}
+  collisionSpawnOffset: {x: 1.5, y: 0}

@@ -20,11 +20,31 @@ MonoBehaviour:
     attribute: 
     amount: 0
   abilityAnimation: {fileID: 7400000, guid: a2ad24339f14bbc4996c146161497c6c, type: 2}
+  AbilityTags:
+    m_SerializedExplicitTags:
+    - Ability.Melee
+  CancelAbilitiesWithTag:
+    m_SerializedExplicitTags: []
+  BlockAbilitiesWithTag:
+    m_SerializedExplicitTags: []
+  ActivationOwnedTags:
+    m_SerializedExplicitTags: []
+  ActivationRequiredTags:
+    m_SerializedExplicitTags: []
+  ActivationBlockedTags:
+    m_SerializedExplicitTags: []
+  SourceRequiredTags:
+    m_SerializedExplicitTags: []
+  SourceBlockedTags:
+    m_SerializedExplicitTags: []
+  TargetRequiredTags:
+    m_SerializedExplicitTags: []
+  TargetBlockedTags:
+    m_SerializedExplicitTags: []
   appliedEffects: []
   grantedEffects: []
-  gameplayTag: {}
   gameplayEffect: {fileID: 11400000, guid: 119aae5e50aca9c4690b47a7e3ac5a24, type: 2}
   maxTargetCount: 1
   meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
   startVFXPrefab: {fileID: 0}
-  collisionSpawnOffset: {x: 0, y: 0}
+  collisionSpawnOffset: {x: 1.5, y: 0}
