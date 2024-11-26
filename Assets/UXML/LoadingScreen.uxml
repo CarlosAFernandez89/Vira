@@ -1,0 +1,8 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UXML/LoadingScreen.uss?fileID=7433441132597879392&amp;guid=e5019bf06895ac6459c9296c6f5dae0f&amp;type=3#LoadingScreen" />
+    <engine:VisualElement name="loading-container" class="full-screen" />
+    <engine:VisualElement name="loading-content">
+        <engine:Label name="LoadingText" text="Loading.." class="loading-text" />
+        <engine:Label name="ProgressPercentage" text="0%" class="progress-text" />
+    </engine:VisualElement>
+</engine:UXML>

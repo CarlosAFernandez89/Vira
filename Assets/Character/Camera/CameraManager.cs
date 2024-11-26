@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -27,6 +28,8 @@ namespace Character.Camera
         private float _normYPanAmount;
 
         private Vector2 _startingTrackedObjectOffset;
+        
+        private Quaternion _initialRotation;
 
         private void Awake()
         {
@@ -47,6 +50,17 @@ namespace Character.Camera
             _normYPanAmount = _positionComposer.Damping.y;
 
             _startingTrackedObjectOffset = _positionComposer.TargetOffset;
+        }
+
+        private void Start()
+        {
+            _initialRotation = transform.rotation;
+        }
+        
+        void LateUpdate()
+        {
+            // Reset the rotation each frame
+            transform.rotation = _initialRotation;
         }
 
         public void LerpYDamping(bool isPlayerFalling)

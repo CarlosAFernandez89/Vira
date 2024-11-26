@@ -79,7 +79,7 @@ namespace Character
             // Only make the manager persistent after initialization
             if (transform.parent == null) // Check if it's not a child object
             {
-                DontDestroyOnLoad(gameObject);
+                //DontDestroyOnLoad(gameObject);
             }
         }
 

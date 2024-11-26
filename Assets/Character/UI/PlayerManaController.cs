@@ -16,14 +16,21 @@ namespace Character.UI
         private void Start()
         {
             _player = GameObject.FindGameObjectWithTag("Player");
-            
-            _currentMana = (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana").CurrentValue;
-            _player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana").OnValueChanged += OnManaChanged;
-            
-            _maxMana = (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana").MaxValue;
-            _player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana").OnMaxValueChanged += OnMaxManaChanged;
-            
-            manaPercentage = _currentMana / _maxMana;
+
+            if (_player != null)
+            {
+                _currentMana = (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent
+                    .GetAttribute("Mana").CurrentValue;
+                _player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana")
+                    .OnValueChanged += OnManaChanged;
+
+                _maxMana = (int)_player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana")
+                    .MaxValue;
+                _player.GetComponent<AbilitySystemComponent>().attributesComponent.GetAttribute("Mana")
+                    .OnMaxValueChanged += OnMaxManaChanged;
+
+                manaPercentage = _currentMana / _maxMana;
+            }
         }
         
         private void OnManaChanged(float newMana)

@@ -57,7 +57,7 @@ namespace Character.Input
         private void OnQuitButtonClicked()
         {
             NoContextResumeGame();
-            SceneManager.LoadScene("MainMenu");
+            LoadingScreen.Instance.LoadScene("MainMenu");
         }
 
         private void OnResumeButtonClicked()

@@ -61,7 +61,7 @@ namespace UXML
 
         private void OnPlayButtonClicked()
         {
-            SceneManager.LoadScene(playGameScene);
+            LoadingScreen.Instance.LoadScene(playGameScene);
         }
 
         private void OnOptionsButtonClicked()
