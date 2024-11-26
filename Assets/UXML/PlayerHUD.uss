@@ -1,0 +1,42 @@
+.hud-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.health-container, .mana-container {
+    flex-direction: row-reverse;
+    align-items: center;
+    margin: 20px;
+}
+
+.circles-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.health-circle, .mana-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-width: 2px;
+    border-color: white;
+    margin: 5px;
+}
+
+.health-circle {
+    background-color: green;
+}
+
+.mana-circle {
+    background-color: blue;
+}
+
+.health-circle.empty, .mana-circle.empty {
+    background-color: transparent;
+}

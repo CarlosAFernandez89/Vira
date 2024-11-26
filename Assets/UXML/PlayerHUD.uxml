@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UXML/PlayerHUD.uss?fileID=7433441132597879392&amp;guid=faec0f1238c58c14da69af6d82982c4f&amp;type=3#PlayerHUD" />
+    <ui:VisualElement name="hud-container" class="hud-container" style="align-content: center;">
+        <ui:VisualElement name="health-container" class="health-container" style="align-content: flex-end; justify-content: flex-end;">
+            <ui:VisualElement name="health-circles" class="circles-container" />
+        </ui:VisualElement>
+        <ui:VisualElement name="mana-container" class="mana-container">
+            <ui:VisualElement name="mana-circles" class="circles-container" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
