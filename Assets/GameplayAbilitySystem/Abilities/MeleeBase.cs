@@ -9,7 +9,6 @@ namespace GameplayAbilitySystem.Abilities
     public class MeleeBase : GameplayAbilityBase
     {
         [Header("Melee Base")]
-        [SerializeField] public GameplayEffectBase gameplayEffect;
         [SerializeField] public int maxTargetCount = 1;
         [SerializeField] public GameObject meleeCollisionPrefab;
         [SerializeField] public GameObject startVFXPrefab;
@@ -102,10 +101,11 @@ namespace GameplayAbilitySystem.Abilities
                 {
                     if (collider == null) continue;
                     
-                    AbilitySystemComponent ASC = collider.gameObject.GetComponent<AbilitySystemComponent>();
-                    if (ASC != null)
+                    AbilitySystemComponent asc = collider.gameObject.GetComponent<AbilitySystemComponent>();
+                    if (asc == null) continue;
+                    foreach (var effect in gameplayEffects)
                     {
-                        ASC.ApplyEffect(gameplayEffect);
+                        asc.ApplyEffect(effect);
                     }
                 }
             }

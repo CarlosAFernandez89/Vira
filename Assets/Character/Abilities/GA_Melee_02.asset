@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputAction: {fileID: 9207084644680965890, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   activateOnGranted: 0
-  abilityName: Melee_02
+  gameplayEffects:
+  - {fileID: 11400000, guid: cc964ce5a0a311b48a67f72c5cd3c527, type: 2}
   cooldown: 0.5
   abilityCost:
-    attribute: Health
-    amount: 1
+    attribute: 
+    amount: 0
   abilityAnimation: {fileID: 7400000, guid: a2ad24339f14bbc4996c146161497c6c, type: 2}
   AbilityTags:
     m_SerializedExplicitTags:
@@ -43,7 +44,6 @@ MonoBehaviour:
     m_SerializedExplicitTags: []
   appliedEffects: []
   grantedEffects: []
-  gameplayEffect: {fileID: 11400000, guid: 119aae5e50aca9c4690b47a7e3ac5a24, type: 2}
   maxTargetCount: 1
   meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
   startVFXPrefab: {fileID: 0}

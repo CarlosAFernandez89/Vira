@@ -99,11 +99,11 @@ namespace GameplayAbilitySystem.Abilities
         private static readonly int IsAbilityOverride = Animator.StringToHash("isAbilityOverride");
 
         [Header("Base Ability Settings")]
-        public InputActionReference inputAction;
-        public bool activateOnGranted = false;
-        public string abilityName;
-        public float cooldown;
-        public AbilityCost abilityCost;
+        [SerializeField] public InputActionReference inputAction;
+        [SerializeField] public bool activateOnGranted = false;
+        [SerializeField] public List<GameplayEffectBase> gameplayEffects;
+        [SerializeField] public float cooldown;
+        [SerializeField] public AbilityCost abilityCost;
 
         protected GameObject CurrentUser;
         private bool _abilityActive = false;
