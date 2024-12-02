@@ -434,7 +434,12 @@ MonoBehaviour:
     baseValue: 10
     minValue: 0
     maxValue: 10
-  attributes: []
+  attributes:
+  - name: Souls
+    baseValue: 0
+    currentValue: 0
+    minValue: 0
+    maxValue: 2500
 --- !u!114 &7893141768364633138
 MonoBehaviour:
   m_ObjectHideFlags: 0

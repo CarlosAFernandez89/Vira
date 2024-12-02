@@ -20,5 +20,26 @@ MonoBehaviour:
     attribute: 
     amount: 0
   abilityAnimation: {fileID: 0}
+  AbilityTags:
+    m_SerializedExplicitTags: []
+  CancelAbilitiesWithTag:
+    m_SerializedExplicitTags: []
+  BlockAbilitiesWithTag:
+    m_SerializedExplicitTags: []
+  ActivationOwnedTags:
+    m_SerializedExplicitTags: []
+  ActivationRequiredTags:
+    m_SerializedExplicitTags: []
+  ActivationBlockedTags:
+    m_SerializedExplicitTags: []
+  SourceRequiredTags:
+    m_SerializedExplicitTags: []
+  SourceBlockedTags:
+    m_SerializedExplicitTags: []
+  TargetRequiredTags:
+    m_SerializedExplicitTags: []
+  TargetBlockedTags:
+    m_SerializedExplicitTags: []
   appliedEffects: []
   grantedEffects: []
+  soulPrefab: {fileID: 4811660201235294305, guid: 0ffcca7b029e40045bd9a5f571c48d0a, type: 3}

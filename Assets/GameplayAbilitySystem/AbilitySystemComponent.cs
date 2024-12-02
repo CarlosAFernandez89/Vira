@@ -72,6 +72,12 @@ namespace GameplayAbilitySystem
                 UnbindInputAction(ability);
             }
         }
+
+        public Vector3 GetOwningActorLocation()
+        {
+            return transform.position;
+        }
+        
     
         /// <summary>
         /// Grants and ability and binds the input of a Gameplay Ability to the AbilitySystemComponent

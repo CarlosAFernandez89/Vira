@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DoT Effect
   m_EditorClassIdentifier: 
   attributeToModify: Health
-  valueToModify: 4
-  effectAmount: 5
-  duration: 10
+  valueToModify: 2
+  effectAmount: -1
+  duration: 3
   frequency: 1

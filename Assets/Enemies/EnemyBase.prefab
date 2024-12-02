@@ -134,7 +134,12 @@ MonoBehaviour:
     baseValue: 10
     minValue: 0
     maxValue: 10
-  attributes: []
+  attributes:
+  - name: Souls
+    baseValue: 5
+    currentValue: 5
+    minValue: 0
+    maxValue: 500
 --- !u!114 &9113580259124760239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +155,10 @@ MonoBehaviour:
   availableAbilities:
   - {fileID: 11400000, guid: 216a1536ac145ff44a7773f4c9e5b78c, type: 2}
   gameplayEffects: []
+  DefaultTags:
+    m_SerializedExplicitTags: []
+  AppliedTags:
+    m_SerializedExplicitTags: []
 --- !u!212 &1996805828923009065
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using GameplayAbilitySystem.Abilities;
 using GameplayAbilitySystem.Attributes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Enemies.BasicAbilities
 {
@@ -11,6 +12,7 @@ namespace Enemies.BasicAbilities
     public class GA_EnemyDeath : GameplayAbilityBase
     {
         private AbilitySystemComponent _abilitySystemComponent;
+        [SerializeField] private GameObject soulPrefab;
 
         public override void OnAbilityGranted(AbilitySystemComponent owningAbilitySystemComponent)
         {
@@ -34,6 +36,7 @@ namespace Enemies.BasicAbilities
             base.StartAbility(user);
             
             // Do whatever needs to be done (ie. Effects, etc.)
+            DropEnemySouls();
             
             EndAbility();
         }
@@ -43,6 +46,20 @@ namespace Enemies.BasicAbilities
             base.EndAbility();
             //AbilitySystemLogger.Log("On Death End!");
             Destroy(_abilitySystemComponent.gameObject);
+        }
+
+        private void DropEnemySouls()
+        {
+            AttributesComponent attributesComponent = _abilitySystemComponent.attributesComponent;
+            AttributeBase souls = attributesComponent.GetAttribute("Souls");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            for (int i = 0; i < souls.BaseValue; ++i)
+            {
+                //Instantiate souls.
+                Vector3 spawnLocation = _abilitySystemComponent.GetOwningActorLocation();
+                Instantiate(soulPrefab, spawnLocation, Quaternion.identity).GetComponent<EnemySoul>().Initialize(player);
+            }
         }
 
         protected override void HandleAnimationEvent(string eventName)
