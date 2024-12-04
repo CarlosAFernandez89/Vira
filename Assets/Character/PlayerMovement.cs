@@ -1,3 +1,4 @@
+using BandoWare.GameplayTags;
 using Character.Camera;
 using GameplayAbilitySystem;
 using UnityEngine;
@@ -78,6 +79,7 @@ namespace Character
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _abilitySystemComponent = GetComponent<AbilitySystemComponent>();
             var fCam = GameObject.FindWithTag("FollowCamera");
             _cameraFollow = fCam.GetComponent<CameraFollow>();
             isFacingRight = true;
@@ -130,9 +132,23 @@ namespace Character
         #endregion
         
         #region Movement
+
+        private bool IsMovementBlocked()
+        {
+            foreach (var appliedTags in _abilitySystemComponent.AppliedTags.GetTags())
+            {
+                if (appliedTags.Equals("MovementBlocked"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         
         private void Move()
         {
+            if (IsMovementBlocked()) return;
+            
             switch (movementValues.currentMovementState)
             {
                 case MovementState.Grounded:

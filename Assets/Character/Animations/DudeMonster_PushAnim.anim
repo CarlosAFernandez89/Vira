@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DudeMonster_MeleeAttack_01
+  m_Name: DudeMonster_PushAnim
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,17 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -7163369904114767755, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
+      value: {fileID: -1445932180357870856, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
     - time: 0.083333336
-      value: {fileID: 8031115725154491009, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
+      value: {fileID: -5428375716064078105, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
     - time: 0.16666667
-      value: {fileID: 1781681019467425889, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
+      value: {fileID: 4704959720257544982, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
     - time: 0.25
-      value: {fileID: -7163369904114767755, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
+      value: {fileID: -8402933157243744402, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - time: 0.33333334
+      value: {fileID: -5380032740822530951, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - time: 0.41666666
+      value: {fileID: 7855648944957611626, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,21 +54,23 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -7163369904114767755, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
-    - {fileID: 8031115725154491009, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
-    - {fileID: 1781681019467425889, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
-    - {fileID: -7163369904114767755, guid: c5abed67c5c987045b95b80e6c7d7252, type: 3}
+    - {fileID: -1445932180357870856, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - {fileID: -5428375716064078105, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - {fileID: 4704959720257544982, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - {fileID: -8402933157243744402, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - {fileID: -5380032740822530951, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
+    - {fileID: 7855648944957611626, guid: 095c17e448cb71c4bba70e7672daa90d, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 0
+    m_LoopTime: 1
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -78,18 +84,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.083333336
-    functionName: BroadcastAnimationEvent
-    data: SpawnCollider
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.25
-    functionName: BroadcastAnimationEvent
-    data: EndAbility
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

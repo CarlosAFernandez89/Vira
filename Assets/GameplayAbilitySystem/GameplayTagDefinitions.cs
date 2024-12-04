@@ -2,6 +2,7 @@ using System.Reflection;
 using BandoWare.GameplayTags;
 
 [assembly: GameplayTag("Player")]
+[assembly: GameplayTag("MovementBlocked")]
 [assembly: GameplayTag("Ability.Melee")]
 [assembly: GameplayTag("Ability.Jump")]
 [assembly: GameplayTag("Ability.Dash")]

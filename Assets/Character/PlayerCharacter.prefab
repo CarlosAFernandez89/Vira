@@ -454,7 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableAbilities:
   - {fileID: 11400000, guid: 35c9b13a17c1a81499faa01e3a91cd93, type: 2}
-  - {fileID: 11400000, guid: 5314d22d40a464f40844763293ba9b98, type: 2}
+  - {fileID: 11400000, guid: 3b002126ea3a7e0499d34b726ebca37f, type: 2}
   - {fileID: 11400000, guid: 53b2a0f0bb4b8624b96b3104336b479f, type: 2}
   gameplayEffects: []
   DefaultTags:

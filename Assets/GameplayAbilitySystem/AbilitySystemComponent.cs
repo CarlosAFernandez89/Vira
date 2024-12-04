@@ -35,7 +35,8 @@ namespace GameplayAbilitySystem
                 attributesComponent = GetComponent<AttributesComponent>();
             }
         }
-
+        
+        
         private void Start()
         {
             if (attributesComponent == null)

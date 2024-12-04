@@ -104,6 +104,7 @@ namespace GameplayAbilitySystem.Abilities
         [SerializeField] public List<GameplayEffectBase> gameplayEffects;
         [SerializeField] public float cooldown;
         [SerializeField] public AbilityCost abilityCost;
+        [SerializeField] protected bool endAbilityOnAnimationEnd = true;
 
         protected GameObject CurrentUser;
         private bool _abilityActive = false;
@@ -472,7 +473,7 @@ namespace GameplayAbilitySystem.Abilities
             yield return new WaitForSeconds(waitTime);
 
             // We could have ended the ability another way already.
-            if (_abilityActive)
+            if (_abilityActive && endAbilityOnAnimationEnd)
             {
                 EndAbility();
             }
