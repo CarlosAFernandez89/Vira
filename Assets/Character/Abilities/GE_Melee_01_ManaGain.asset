@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b30e1a0576b6104d916dd9e8454936d, type: 3}
-  m_Name: GE_Melee_02
+  m_Name: GE_Melee_01_ManaGain
   m_EditorClassIdentifier: 
-  attributeToModify: Health
+  attributeToModify: Mana
   valueToModify: 2
-  effectAmount: -1
+  effectAmount: 1
   duration: -1
   frequency: 0

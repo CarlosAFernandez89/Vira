@@ -20,6 +20,7 @@ MonoBehaviour:
   abilityCost:
     attribute: 
     amount: 0
+  endAbilityOnAnimationEnd: 1
   abilityAnimation: {fileID: 7400000, guid: a0d094d6163db384997f8f44f9ae8ab2, type: 2}
   AbilityTags:
     m_SerializedExplicitTags:
@@ -29,7 +30,8 @@ MonoBehaviour:
   BlockAbilitiesWithTag:
     m_SerializedExplicitTags: []
   ActivationOwnedTags:
-    m_SerializedExplicitTags: []
+    m_SerializedExplicitTags:
+    - MovementBlocked.Gravity
   ActivationRequiredTags:
     m_SerializedExplicitTags: []
   ActivationBlockedTags:
@@ -46,6 +48,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7d27f6410eda1644b8090d026bb7d81d, type: 2}
   grantedEffects: []
   maxTargetCount: 1
+  movementInput: {fileID: -9007679612043149234, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
   startVFXPrefab: {fileID: 0}
   collisionSpawnOffset: {x: 1.5, y: 0}
+  manaRegenerationEffect: {fileID: 11400000, guid: cc964ce5a0a311b48a67f72c5cd3c527, type: 2}
+  groundCheckDistance: 3
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8

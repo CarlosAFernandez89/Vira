@@ -30,7 +30,7 @@ MonoBehaviour:
     m_SerializedExplicitTags: []
   ActivationOwnedTags:
     m_SerializedExplicitTags:
-    - MovementBlocked
+    - MovementBlocked.All
   ActivationRequiredTags:
     m_SerializedExplicitTags: []
   ActivationBlockedTags:

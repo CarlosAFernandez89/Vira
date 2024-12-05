@@ -137,7 +137,19 @@ namespace Character
         {
             foreach (var appliedTags in _abilitySystemComponent.AppliedTags.GetTags())
             {
-                if (appliedTags.Equals("MovementBlocked"))
+                if (appliedTags.Equals("MovementBlocked.All"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        private bool IsGravityBlocked()
+        {
+            foreach (var appliedTags in _abilitySystemComponent.AppliedTags.GetTags())
+            {
+                if (appliedTags.Equals("MovementBlocked.Gravity"))
                 {
                     return true;
                 }
@@ -210,9 +222,11 @@ namespace Character
 
             // Clamp fall speed
             VerticalVelocity = Mathf.Clamp(VerticalVelocity, -movementValues.maxFallSpeed, 50f);
-            
-            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, VerticalVelocity);
-            //_rigidbody2D.linearVelocity = new Vector2(_moveVelocity.x, _rigidbody2D.linearVelocity.y);
+
+            _rigidbody2D.linearVelocity = 
+                IsGravityBlocked() ? 
+                    new Vector2(_rigidbody2D.linearVelocity.x, 0f) :
+                    new Vector2(_rigidbody2D.linearVelocity.x, VerticalVelocity);
             
             animator.SetFloat(Speed, _moveVelocity.magnitude);
         }

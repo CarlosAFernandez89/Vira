@@ -1,6 +1,7 @@
 using GameplayAbilitySystem.Attributes;
 using GameplayAbilitySystem.GameplayEffects;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 namespace GameplayAbilitySystem.Abilities
@@ -10,15 +11,26 @@ namespace GameplayAbilitySystem.Abilities
     {
         [Header("Melee Base")]
         [SerializeField] public int maxTargetCount = 1;
+        [SerializeField] private InputActionReference movementInput;
         [SerializeField] public GameObject meleeCollisionPrefab;
         [SerializeField] public GameObject startVFXPrefab;
         [SerializeField] public Vector2 collisionSpawnOffset = new Vector2(0f, 0f);
+        [SerializeField] private GameplayEffectBase manaRegenerationEffect;
+
+        [Header("Conditional Variables")] 
+        [SerializeField] private float groundCheckDistance = 3f;
+        [SerializeField] private LayerMask groundLayer;
         
         CapsuleCollider2D _capsuleCollider;
         private GameObject _meleeInstance;
+        private Rigidbody2D _rigidbody2D;
 
-        private void OnEnable()
+        public override void OnAbilityGranted(AbilitySystemComponent owningAbilitySystemComponent)
         {
+            base.OnAbilityGranted(owningAbilitySystemComponent);
+            
+            _rigidbody2D = owningAbilitySystemComponent.gameObject.GetComponent<Rigidbody2D>();
+            
         }
 
         protected override void StartAbility(GameObject user)
@@ -30,6 +42,13 @@ namespace GameplayAbilitySystem.Abilities
                 GameObject vfxInstance = Instantiate(startVFXPrefab, user.transform.position, Quaternion.identity);
                 Destroy(vfxInstance, 2.0f);
             }
+        }
+        
+        protected override void ActivateAbility(GameObject user)
+        {
+            base.ActivateAbility(user);
+            
+            _rigidbody2D.linearVelocity = Vector2.zero;
         }
         
         // Possible animation events to call.
@@ -58,9 +77,36 @@ namespace GameplayAbilitySystem.Abilities
         {
             if (meleeCollisionPrefab != null && CurrentUser != null)
             {
-                Vector3 spawnPosition = CurrentUser.transform.position +
-                                        new Vector3(CurrentUser.transform.right.x * collisionSpawnOffset.x, 
-                                            collisionSpawnOffset.y, 0);
+                Vector2 inputDirection = movementInput.action.ReadValue<Vector2>();
+                
+                // Determine the spawn direction based on the input
+                Vector2 spawnDirection = CurrentUser.transform.right;
+                Vector3 spawnPosition = Vector3.zero;
+                
+                // Up Attack
+                if (inputDirection.y > 0.85f)
+                {
+                    spawnDirection = Vector2.up;
+                    
+                    spawnPosition = 
+                        CurrentUser.transform.position + 
+                        new Vector3(0f, spawnDirection.y * collisionSpawnOffset.x);
+                    
+                } // Down Attack only while not on ground.
+                else if (inputDirection.y < -0.85f && !IsGrounded())
+                {
+                    spawnDirection = Vector2.down;
+                    
+                    spawnPosition = 
+                        CurrentUser.transform.position + 
+                        new Vector3(0f, spawnDirection.y * collisionSpawnOffset.x);
+                }
+                else
+                {
+                    spawnPosition = 
+                        CurrentUser.transform.position + new Vector3(spawnDirection.x * collisionSpawnOffset.x,
+                            spawnDirection.y * collisionSpawnOffset.y, 0);
+                }
 
                 _meleeInstance = Instantiate(meleeCollisionPrefab, spawnPosition, Quaternion.identity);
 
@@ -71,6 +117,13 @@ namespace GameplayAbilitySystem.Abilities
                     CheckCollisions();
                 }
             }
+        }
+        
+        private bool IsGrounded()
+        {
+            // Implement your ground check logic here
+            // For example, using Physics2D.Raycast or checking a grounded flag
+            return Physics2D.Raycast(CurrentUser.transform.position, Vector2.down, groundCheckDistance, groundLayer);
         }
 
         private void DestroyMeleeCollision()
@@ -108,15 +161,14 @@ namespace GameplayAbilitySystem.Abilities
                         asc.ApplyEffect(effect);
                     }
                 }
+                
+                //Apply mana regain effect to self.
+                if (GetAbilitySystemComponent() != null)
+                {
+                    GetAbilitySystemComponent().ApplyEffect(manaRegenerationEffect);
+                }
             }
         }
-
-        protected override void ActivateAbility(GameObject user)
-        {
-            base.ActivateAbility(user);
-
-        }
-        
 
         protected override void EndAbility()
         {
