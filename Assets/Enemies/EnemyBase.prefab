@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e250b3623465f63438ead34f2b4f6283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableAbilities:
+  defaultAbilities:
   - {fileID: 11400000, guid: 216a1536ac145ff44a7773f4c9e5b78c, type: 2}
   gameplayEffects: []
   DefaultTags:

@@ -677,6 +677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desiredColor: {r: 0.990566, g: 0.024564909, b: 0, a: 1}
+  charmAbility: {fileID: 11400000, guid: 6f71798e61f69a04bb6e19ec3142beec, type: 2}
 --- !u!61 &994605962
 BoxCollider2D:
   m_ObjectHideFlags: 0

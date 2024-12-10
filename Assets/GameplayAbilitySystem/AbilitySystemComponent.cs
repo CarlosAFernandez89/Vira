@@ -7,6 +7,7 @@ using GameplayAbilitySystem.Attributes;
 using GameplayAbilitySystem.GameplayEffects;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace GameplayAbilitySystem
 {
@@ -15,7 +16,7 @@ namespace GameplayAbilitySystem
         // List of available abilities
     
         [NonSerialized]  public AttributesComponent attributesComponent;
-        [SerializeField] public List<GameplayAbilityBase> availableAbilities = new List<GameplayAbilityBase>();
+        [SerializeField] public List<GameplayAbilityBase> defaultAbilities = new List<GameplayAbilityBase>();
         [SerializeField] public List<GameplayEffectBase> gameplayEffects = new List<GameplayEffectBase>();
 
         // Dictionary to track cooldowns (ability name -> time remaining)
@@ -50,12 +51,12 @@ namespace GameplayAbilitySystem
             }
             
             // Subscribe to ability events for each available ability
-            for (int i = 0; i < availableAbilities.Count; ++i)
+            for (int i = 0; i < defaultAbilities.Count; ++i)
             {
-                var clonedAbility = ScriptableObjectUtility.Clone(availableAbilities[i]);
-                availableAbilities[i] = clonedAbility;
-                availableAbilities[i].OnAbilityGranted(this);
-                BindInputAction(availableAbilities[i]);
+                var clonedAbility = ScriptableObjectUtility.Clone(defaultAbilities[i]);
+                defaultAbilities[i] = clonedAbility;
+                defaultAbilities[i].OnAbilityGranted(this);
+                BindInputAction(defaultAbilities[i]);
             }
 
             foreach (var gameplayEffect in gameplayEffects)
@@ -68,7 +69,7 @@ namespace GameplayAbilitySystem
         private void OnDestroy()
         {
             // Unsubscribe to ability events for each available ability
-            foreach (var ability in availableAbilities)
+            foreach (var ability in defaultAbilities)
             {
                 UnbindInputAction(ability);
             }
@@ -86,9 +87,9 @@ namespace GameplayAbilitySystem
         /// <param name="gameplayAbility">Reference to the owners AbilitySystemComponent</param>
         public void GrantAbility(GameplayAbilityBase gameplayAbility)
         {
-            if (!availableAbilities.Contains(gameplayAbility))
+            if (!defaultAbilities.Contains(gameplayAbility))
             {
-                availableAbilities.Add(gameplayAbility);
+                defaultAbilities.Add(gameplayAbility);
                 BindInputAction(gameplayAbility);
                 gameplayAbility.OnAbilityGranted(this);
             }
@@ -100,9 +101,9 @@ namespace GameplayAbilitySystem
         /// <param name="gameplayAbility">Reference to the owners AbilitySystemComponent</param>
         public void RemoveAbility(GameplayAbilityBase gameplayAbility)
         {
-            if (availableAbilities.Contains(gameplayAbility))
+            if (defaultAbilities.Contains(gameplayAbility))
             {
-                availableAbilities.Remove(gameplayAbility);
+                defaultAbilities.Remove(gameplayAbility);
                 UnbindInputAction(gameplayAbility);
                 gameplayAbility.OnAbilityRemoved(this);
             }
@@ -154,18 +155,21 @@ namespace GameplayAbilitySystem
         /// Removes GameplayEffect from AbilitySystemComponent
         /// </summary>
         /// <param name="effect">The effect to apply</param>
-        private void RemoveEffect(GameplayEffectBase effect)
+        public void RemoveEffect(GameplayEffectBase effect)
         {
             // Logic to remove the effect from the target
             AttributeBase attributeBase = attributesComponent.GetAttribute(effect.attributeToModify);
             if (attributeBase != null)
             {
-                attributeBase.ModifyCurrentValue(-effect.effectAmount);
+                ModifyAttribute(effect, false);
             }
         }
     
-        private void ModifyAttribute(GameplayEffectBase effect)
+        private void ModifyAttribute(GameplayEffectBase effect, bool addEffect = true)
         {
+            // Determine the amount to modify (negative if addEffect is false)
+            float effectAmount = addEffect ? effect.effectAmount : -effect.effectAmount;
+            
             AttributeBase foundAttribute = attributesComponent.GetAttribute(effect.attributeToModify);
             if (foundAttribute != null)
             {
@@ -173,14 +177,27 @@ namespace GameplayAbilitySystem
                 {
                     case AttributeValue.Name: // We don't want to change the name
                         break;
-                    case AttributeValue.BaseValue: foundAttribute.ModifyBaseValue(effect.effectAmount);
+                    case AttributeValue.BaseValue:
+                        foundAttribute.ModifyBaseValue(effectAmount);
                         break;
-                    case AttributeValue.CurrentValue: foundAttribute.ModifyCurrentValue(effect.effectAmount);
+                    case AttributeValue.CurrentValue:
+                    {
+                        //TODO: Make sure actor isn't immune to damage before applying damage
+                        //We have to check if its a damage effect first. ie: Health or Mana.
+                        foundAttribute.ModifyCurrentValue(effectAmount);
                         break;
-                    case AttributeValue.MinValue: foundAttribute.ModifyMinValue(effect.effectAmount);
+                    }
+                    case AttributeValue.MinValue:
+                    {
+                        foundAttribute.ModifyMinValue(effectAmount);
+                        break; 
+                    }
+                case AttributeValue.MaxValue:
+                    {
+                        foundAttribute.ModifyMaxValue(effectAmount);
+                        foundAttribute.ModifyCurrentValue(foundAttribute.MaxValue);
                         break;
-                    case AttributeValue.MaxValue: foundAttribute.ModifyMaxValue(effect.effectAmount);
-                        break;
+                    }
                     default: AbilitySystemLogger.LogError("Invalid value for attribute: " + effect.name);
                         break;
                 }
@@ -216,7 +233,7 @@ namespace GameplayAbilitySystem
         public bool TryActivateAbility(GameplayAbilityBase gameplayAbility)
         {
             // Check if ability exists in list and is off cooldown
-            if (!availableAbilities.Contains(gameplayAbility) || IsAbilityOnCooldown(gameplayAbility)) return false;
+            if (!defaultAbilities.Contains(gameplayAbility) || IsAbilityOnCooldown(gameplayAbility)) return false;
 
             // Start cooldown
             StartCooldown(gameplayAbility);
@@ -271,7 +288,7 @@ namespace GameplayAbilitySystem
 
         public void CancelAllAbilitiesWithGameplayTag(GameplayTag gameplayTag)
         {
-            foreach (GameplayAbilityBase ability in availableAbilities)
+            foreach (GameplayAbilityBase ability in defaultAbilities)
             {
                 foreach (GameplayTag tempTag in ability.AbilityTags.GetTags())
                 {
