@@ -13,7 +13,7 @@ namespace Character.Abilities.Charms
         private AbilitySystemComponent _ownerAbilitySystemComponent = null;
         [SerializeField] private List<CharmAbilityBase> ownedCharmAbilities = new List<CharmAbilityBase>();
         [SerializeField] private List<CharmAbilityBase> activeCharmAbilities = new List<CharmAbilityBase>();
-        private int _activeCharmTotal = 3;
+        [SerializeField] private int defaultCharmSlots = 3;
 
         // Action to bind for UI events to trigger when adding/removing active charms.
         public event Action OnActiveCharmsModified;
@@ -42,7 +42,7 @@ namespace Character.Abilities.Charms
 
         private void SaveCharmManager()
         {
-            SaveCharmData saveCharmData = new SaveCharmData(ownedCharmAbilities, activeCharmAbilities, _activeCharmTotal);
+            SaveCharmData saveCharmData = new SaveCharmData(ownedCharmAbilities, activeCharmAbilities, defaultCharmSlots);
             SaveProfile<SaveCharmData> saveProfile = new SaveProfile<SaveCharmData>("SaveCharmData", saveCharmData);
             SaveManager.Save(saveProfile);
         }
@@ -56,7 +56,6 @@ namespace Character.Abilities.Charms
                 
                 ownedCharmAbilities = ownedCharms;
                 activeCharmAbilities = activeCharms;
-                _activeCharmTotal = loadedProfile.saveData.ActiveCharmTotal;
             
                 return true;
             }
@@ -141,13 +140,13 @@ namespace Character.Abilities.Charms
 
         private void IncreaseActiveCharmTotal()
         {
-            _activeCharmTotal++;
+            defaultCharmSlots++;
             OnCharmManagerModified?.Invoke();
         }
 
         private void DecreaseActiveCharmTotal()
         {
-            _activeCharmTotal--;
+            defaultCharmSlots--;
             OnCharmManagerModified?.Invoke();
         }
         

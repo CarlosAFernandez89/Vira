@@ -33,6 +33,7 @@ namespace SaveLoad
         {
             OwnedCharmAbilityPaths = new List<string>();
             ActiveCharmAbilityPaths = new List<string>();
+            ActiveCharmTotal = 3; //Default to 3.
         }
 
         public SaveCharmData(List<CharmAbilityBase> ownedCharms, List<CharmAbilityBase> activeCharms, int charmTotal)
