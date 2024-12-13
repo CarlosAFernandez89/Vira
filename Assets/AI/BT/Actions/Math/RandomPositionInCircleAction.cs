@@ -14,10 +14,17 @@ namespace AI.BT.Actions.Math
         category: "Action/Math")]
     public partial class RandomPositionInCircleAction : Action
     {
-        [SerializeReference] public BlackboardVariable<Vector3> Value;
-        [SerializeReference] public BlackboardVariable<Transform> Target;
-        [SerializeReference] public BlackboardVariable<float> MinimumRadius = new(1);
-        [SerializeReference] public BlackboardVariable<float> MaximumRadius = new(3);
+        [SerializeReference] 
+        public BlackboardVariable<Vector3> Value;
+        
+        [SerializeReference] 
+        public BlackboardVariable<Transform> Target;
+        
+        [SerializeReference] 
+        public BlackboardVariable<float> MinimumRadius = new(1);
+        
+        [SerializeReference] 
+        public BlackboardVariable<float> MaximumRadius = new(3);
 
         protected override Status OnStart()
         {

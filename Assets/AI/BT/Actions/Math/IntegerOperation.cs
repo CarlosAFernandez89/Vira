@@ -11,7 +11,7 @@ namespace AI.BT.Actions.Math
         name: "Integer Operation",
         story: "[Result] = [LHS] [Operator] [RHS]",
         category: "Action/Math")]
-    public class IntegerOperation : Action
+    public partial class IntegerOperation : Action
     {
         public enum OperatorType
         {

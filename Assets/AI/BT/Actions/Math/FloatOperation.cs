@@ -21,16 +21,16 @@ namespace AI.BT.Actions.Math
             Divide
         }
 
-        [SerializeReference]
+        [SerializeReference] 
         public BlackboardVariable<float> Result;
 
-        [SerializeReference]
+        [SerializeReference] 
         public BlackboardVariable<float> LHS;
 
-        [SerializeReference]
+        [SerializeReference] 
         public BlackboardVariable<OperatorType> Operator;
 
-        [SerializeReference]
+        [SerializeReference] 
         public BlackboardVariable<float> RHS;
 
         protected override Status OnStart()
