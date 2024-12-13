@@ -59,24 +59,29 @@ namespace SaveLoad
         
         public (List<CharmAbilityBase> ownedCharms, List<CharmAbilityBase> activeCharms) LoadCharms()
         {
+            List<CharmAbilityBase> allOwnedCharms;
+            List<CharmAbilityBase> allActiveCharms;
+
         #if UNITY_EDITOR
-            var allOwnedCharms = OwnedCharmAbilityPaths
+            // Load charms using AssetDatabase in the editor
+            allOwnedCharms = OwnedCharmAbilityPaths
                 .Select(path => UnityEditor.AssetDatabase.LoadAssetAtPath<CharmAbilityBase>(path))
                 .Where(charm => charm != null)
                 .ToList();
 
-            var allActiveCharms = ActiveCharmAbilityPaths
+            allActiveCharms = ActiveCharmAbilityPaths
                 .Select(path => UnityEditor.AssetDatabase.LoadAssetAtPath<CharmAbilityBase>(path))
                 .Where(charm => charm != null)
                 .ToList();
         #else
-            var allOwnedCharms = OwnedCharmAbilityPaths
-                .Select(name => Resources.Load<CharmAbilityBase>(name))
+            // Load charms by name at runtime using Resources.Load
+            allOwnedCharms = OwnedCharmAbilityPaths
+                .Select(name => Resources.Load<CharmAbilityBase>($"Charms/{name}")) // Assuming charms are in Resources/Charms
                 .Where(charm => charm != null)
                 .ToList();
             
-            var allActiveCharms = ActiveCharmAbilityPaths
-                .Select(name => Resources.Load<CharmAbilityBase>(name))
+            allActiveCharms = ActiveCharmAbilityPaths
+                .Select(name => Resources.Load<CharmAbilityBase>($"Charms/{name}"))
                 .Where(charm => charm != null)
                 .ToList();
         #endif

@@ -44,12 +44,12 @@ namespace Character.Abilities.Charms
         {
             SaveCharmData saveCharmData = new SaveCharmData(ownedCharmAbilities, activeCharmAbilities, defaultCharmSlots);
             SaveProfile<SaveCharmData> saveProfile = new SaveProfile<SaveCharmData>("SaveCharmData", saveCharmData);
-            SaveManager.Save(saveProfile);
+            SaveManager.Save(saveProfile, SaveManager.GetActiveSaveSlot());
         }
         
         private bool LoadCharmManager()
         {
-            SaveProfile<SaveCharmData> loadedProfile = SaveManager.Load<SaveCharmData>("SaveCharmData");
+            SaveProfile<SaveCharmData> loadedProfile = SaveManager.Load<SaveCharmData>("SaveCharmData", SaveManager.GetActiveSaveSlot());
             if (loadedProfile != null)
             {
                 var (ownedCharms, activeCharms) = loadedProfile.saveData.LoadCharms();
