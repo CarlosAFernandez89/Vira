@@ -270,9 +270,9 @@ Animator:
   m_GameObject: {fileID: 1796900049374797451}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 082e33aa0314ff847ab04ab3d0275254, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -300,6 +300,7 @@ MonoBehaviour:
   - rid: 8040271445358543193
   - rid: 8040271448693015097
   - rid: 8040271448693015098
+  - rid: 8040271468947309554
   references:
     version: 2
     RefIds:
@@ -335,3 +336,11 @@ MonoBehaviour:
           m_Value1: 15064724109283641891
         Name: FoVOrigin
         m_Value: {fileID: 8646330499700575150}
+    - rid: 8040271468947309554
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2556887098487172905
+          m_Value1: 8243462965967638941
+        Name: Chase Speed
+        m_Value: 4.5

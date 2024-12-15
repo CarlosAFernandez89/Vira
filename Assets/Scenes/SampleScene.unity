@@ -7077,6 +7077,56 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: 'managedReferences[8040271468947309553]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[System.Single,
+        mscorlib]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: 'managedReferences[8040271469903347877]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[AI.BT.Enums.NPCMovementType,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271468947309553].Name
+      value: Chase Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271469903347877].Name
+      value: Movement Type
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271468947309553].m_Value
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271469903347877].m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[4]'
+      value: 8040271469903347877
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271468947309553].GUID.m_Value0
+      value: 2556887098487172905
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271468947309553].GUID.m_Value1
+      value: 8243462965967638941
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271469903347877].GUID.m_Value0
+      value: 9857554802886281018
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: managedReferences[8040271469903347877].GUID.m_Value1
+      value: 1847366901790103220
+      objectReference: {fileID: 0}
+    - target: {fileID: 892176703743058081, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
       propertyPath: managedReferences[8040271445358543193].m_Value.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -7091,6 +7141,10 @@ PrefabInstance:
     - target: {fileID: 1796900049374797451, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
       propertyPath: m_Name
       value: EnemyBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 5801799961167978330, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8646330499700575150, guid: b3b326e0b697c2540b858deff402cefb, type: 3}
       propertyPath: m_LocalPosition.x

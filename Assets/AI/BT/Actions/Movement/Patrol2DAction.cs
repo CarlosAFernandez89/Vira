@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AI.BT.Enums;
 using Unity.Behavior;
 using Unity.Properties;
 using UnityEngine;
@@ -31,6 +32,8 @@ namespace AI.BT.Actions.Movement
         [SerializeReference] 
         public BlackboardVariable<float> DistanceThreshold = new BlackboardVariable<float>(0.2f);
         
+        [SerializeReference] public BlackboardVariable<NPCMovementType> NPCMovement = new BlackboardVariable<NPCMovementType>();
+
         [CreateProperty]
         private Vector3 m_CurrentTarget;
         
@@ -96,6 +99,11 @@ namespace AI.BT.Actions.Movement
                 Vector3 agentPosition = Agent.Value.transform.position;
                 Vector3 targetPosition = Waypoints.Value[_currentWaypointIndex].transform.position;
                 Vector3 movement = (targetPosition - agentPosition).normalized * Speed;
+
+                if (NPCMovement.Value == NPCMovementType.Ground)
+                {
+                    movement.y = 0.0f;
+                }
 
                 // Update position
                 if (_rigidbody2D != null)
