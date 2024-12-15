@@ -2,6 +2,7 @@ using System;
 using Character;
 using Character.Abilities.Charms;
 using GameplayAbilitySystem;
+using Interface;
 using UnityEngine;
 using UnityEngine.Serialization;
 

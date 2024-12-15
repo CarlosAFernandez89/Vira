@@ -59,7 +59,7 @@ namespace AI.BT.Actions.Movement
 
             if (NPCMovement.Value == NPCMovementType.Ground)
             {
-                movement.y = 0.0f;
+                movement.y = Physics.gravity.y;
             }
             
             if (Vector3.Distance(agentPosition, m_ColliderAdjustedTargetPosition) <= DistanceThreshold.Value)

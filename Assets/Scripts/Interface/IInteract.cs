@@ -1,5 +1,11 @@
 
-public interface IInteract
+using Character;
+using UnityEngine;
+
+namespace Interface
 {
-    void Interact();
+    public interface IInteract
+    {
+        void Interact();
+    }
 }

@@ -102,7 +102,7 @@ namespace AI.BT.Actions.Movement
 
                 if (NPCMovement.Value == NPCMovementType.Ground)
                 {
-                    movement.y = 0.0f;
+                    movement.y = Physics.gravity.y;
                 }
 
                 // Update position
