@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 6238168625617549714}
   - component: {fileID: 2653375911820013078}
   - component: {fileID: 1897988266751399256}
+  - component: {fileID: 4883960408544641633}
   m_Layer: 0
   m_Name: MapCamera
   m_TagString: Untagged
@@ -293,8 +294,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -354,6 +355,27 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &4883960408544641633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6491265178360549569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb71c2a3a5c846e4b0bd4e76f29e0f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapRenderTexture: {fileID: 8400000, guid: 83c5134121f90e44fb752a1260b657bf, type: 2}
+  inputActions: {fileID: -944628639613478452, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  mapCamera: {fileID: 2653375911820013078}
+  minZoom: 5
+  maxZoom: 25
+  zoomSpeed: 2
+  maxZoomSpeed: 15
+  zoomAcceleration: 5
+  zoomLerpSpeed: 5
 --- !u!1 &7692552672183729856
 GameObject:
   m_ObjectHideFlags: 0

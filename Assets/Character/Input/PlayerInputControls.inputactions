@@ -677,6 +677,33 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "DragCameraStart",
+                    "type": "Button",
+                    "id": "5b0842c4-13d4-4652-b9ec-08f1b55a78ef",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ResetCamera",
+                    "type": "Button",
+                    "id": "7360261b-05a3-4dd3-9615-2064e5db7bf3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "DragCameraDelta",
+                    "type": "Value",
+                    "id": "58a025e2-be15-423a-a932-55255c42caff",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Submit",
                     "type": "Button",
                     "id": "da6d65f6-59cb-40b5-ac48-9ca1ff2df193",
@@ -762,6 +789,24 @@
                     "type": "PassThrough",
                     "id": "15624457-80b4-4157-ad82-37f18ab8b94a",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ZoomIn",
+                    "type": "Button",
+                    "id": "2748a178-0530-42c3-8b7c-06f91eefe5c5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ZoomOut",
+                    "type": "Button",
+                    "id": "b4d93f06-c0e2-4a83-8001-ca516d46434f",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -1061,6 +1106,50 @@
                 },
                 {
                     "name": "",
+                    "id": "ef6dc8c2-13fa-46de-b9ce-4a71243d98f4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DragCameraStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "01ff04b0-5066-4e80-8793-ce94b6067da0",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ResetCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c942596-ebaa-4a59-bf46-ecb53166a91e",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Touch;Joystick;XR",
+                    "action": "ResetCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aa90328f-dfd1-48f7-bd55-9c713c876df3",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DragCameraDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1d9fb118-5cbb-4ade-bc3e-30f371036358",
                     "path": "*/{Submit}",
                     "interactions": "",
@@ -1232,6 +1321,50 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "ScrollWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90b485bc-1ed4-4d7e-87cf-959ff820853c",
+                    "path": "<Keyboard>/leftBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ZoomIn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75dcb6d6-678f-45f8-80ad-e3717b9589cc",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Touch;Joystick;XR",
+                    "action": "ZoomIn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81a54389-eacd-4f48-b608-d1c6b4546c0e",
+                    "path": "<Keyboard>/rightBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ZoomOut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1083b7b-b574-42e8-aa95-e9aff726f8ca",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Touch;Joystick;XR",
+                    "action": "ZoomOut",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

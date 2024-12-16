@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Character.UI.Map;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
@@ -9,6 +10,8 @@ namespace Character.UI
     {
         public UIDocument uiDocument; // Reference to the UI Document component
         public InputActionAsset inputActions;
+        public MapUIManager mapManager;
+        public VisualTreeAsset mapUIAsset;
         
         private VisualElement _root;
         private VisualElement _tabContainer;
@@ -62,12 +65,18 @@ namespace Character.UI
             // Add some sample tabs and content (replace with your actual content loading)
             AddTab("Charms", new Label("Content of Charms"));
         
-            Button tab2Button = new Button
+            
+            // Add the map tab
+            if (mapUIAsset != null)
             {
-                text = "Button in Map"
-            };
-        
-            AddTab("Map", tab2Button);
+                TemplateContainer mapUIInstance = mapUIAsset.Instantiate();
+                AddTab("Map", mapUIInstance);
+                mapManager.InitializeMap(mapUIInstance);
+            }
+            else
+            {
+                Debug.LogError("MapUIAsset not assigned in the Inspector!");
+            }
         
             AddTab("Lore", new Label("Content of Lore"));
             

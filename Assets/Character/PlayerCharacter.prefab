@@ -848,6 +848,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 308958180715531392}
   inputActions: {fileID: -944628639613478452, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  mapManager: {fileID: 6113492376641873723}
+  mapUIAsset: {fileID: 9197481963319205126, guid: 28e9d9c8d9f94d0a83bdbe68b67ba500, type: 3}
 --- !u!1 &9184493277087061484
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,6 +931,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CamaraManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4883960408544641633, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: owningCharacter
+      value: 
+      objectReference: {fileID: 7622947136239430374}
     - target: {fileID: 9117495657028889400, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -974,6 +980,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+--- !u!114 &6113492376641873723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4883960408544641633, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+  m_PrefabInstance: {fileID: 1661877674062914906}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb71c2a3a5c846e4b0bd4e76f29e0f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7608819539449712226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9117495657028889400, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
