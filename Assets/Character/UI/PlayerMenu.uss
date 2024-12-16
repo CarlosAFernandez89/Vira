@@ -1,0 +1,47 @@
+﻿/* General container for the header */
+.tab-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Space out buttons and label */
+    align-items: center; /* Center items vertically */
+    padding: 5px;
+    margin-bottom: 5px; /* Add space between header and content */
+    border: 2px solid black;
+    background-color: white;
+}
+
+/* Style for the tab buttons */
+.tab-button {
+    -unity-font-style: bold;
+    font-size: 14px;
+    padding: 5px 10px;
+    margin: 0 10px; /* Add spacing between the buttons and label */
+    border-radius: 5px;
+    background-color: rgb(70, 70, 70);
+    color: white;
+}
+
+/* Previous and Next Buttons */
+.side-tab-button {
+    width: 150px; /* Fixed width for the buttons */
+}
+
+/* Style for the current tab name label */
+.current-tab-name {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center; /* Center the text */
+    flex-grow: 1; /* Push buttons to the edges */
+    white-space: nowrap;
+}
+
+/* Style for the tab content */
+.tab-content {
+    flex-grow: 1; /* Allow content to fill available space */
+    background-color: rgb(240, 240, 240);
+    border: 2px solid black;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center; /* Center content */
+    color: black;
+}
