@@ -1,0 +1,143 @@
+#CharmUI {
+    background-color: rgb(50, 50, 50);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#LeftSection {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#RightSection {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#EquippedCharms {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#Notches {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#BottomHalf {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#RightSection {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#CharmName {
+    color: rgb(255, 255, 255);
+    -unity-text-align: upper-left;
+}
+
+#CharmDescription {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    flex-grow: 0;
+    height: auto;
+    padding: 5px;
+    color: rgb(255, 255, 255);
+    align-content: auto;
+    align-items: auto;
+    font-size: 18px;
+}
+
+.charm-item {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(100, 100, 100, 0.5);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 2px;
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.charm-item:hover {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.notch-slot {
+    width: 20px;
+    height: 30px;
+    background-color: rgba(100, 100, 100, 0.5);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    margin-left: 2px;
+}
+
+.notch-cost {
+    width: 15px;
+    height: 22px;
+    background-color: rgba(100, 100, 100, 0.5);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    margin-left: 2px;
+}
+
+.equipped-slot {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(50, 50, 50, 0.5);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-left: 2px;
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.equipped-slot:hover {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.equipped-slot-empty {
+    background-image: url("project://database/Assets/Textures/UI/PlayerMenu/charm_equipped_slot.png?fileID=2800000&guid=dbc9164f4b9a1014a9b0bcb10c2e31fd&type=3#charm_equipped_slot");
+}

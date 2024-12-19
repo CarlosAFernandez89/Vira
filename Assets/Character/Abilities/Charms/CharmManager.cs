@@ -14,6 +14,7 @@ namespace Character.Abilities.Charms
         [SerializeField] private List<CharmAbilityBase> ownedCharmAbilities = new List<CharmAbilityBase>();
         [SerializeField] private List<CharmAbilityBase> activeCharmAbilities = new List<CharmAbilityBase>();
         [SerializeField] private int defaultCharmSlots = 3;
+        private int _extraCharmSlots = 0;
 
         // Action to bind for UI events to trigger when adding/removing active charms.
         public event Action OnActiveCharmsModified;
@@ -21,6 +22,20 @@ namespace Character.Abilities.Charms
         // Action to Save the CharmManager data whenever we modify its base variables
         public event Action OnCharmManagerModified;
 
+        public int GetMaxCharmSlots()
+        {
+            return defaultCharmSlots + _extraCharmSlots;
+        }
+        public List<CharmAbilityBase> GetActiveCharmAbilities()
+        {
+            return activeCharmAbilities;
+        }
+
+        public List<CharmAbilityBase> GetOwnedCharmAbilities()
+        {
+            return ownedCharmAbilities;
+        }
+        
         private void Awake()
         {
             OnCharmManagerModified += SaveCharmManager;

@@ -42,7 +42,6 @@ namespace Character.Abilities
             _rigidbody2D = _playerObject.GetComponent<Rigidbody2D>();
             
             _dashDuration = overrideDashTime ? newDashTime : abilityAnimation.length;
-            AbilitySystemLogger.Log("Dash Duration: " + _dashDuration);
 
             _contactFilter = new ContactFilter2D
             {

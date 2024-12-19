@@ -45,8 +45,10 @@ MonoBehaviour:
   grantedEffects: []
   CharmInfo:
     DisplayName: MaxHealthIncrease
-    Icon: {fileID: 0}
+    Icon: {fileID: -5988149511550563118, guid: 94da217284005e64bb391558a721be6d, type: 3}
     Description: Increase Maximum Health by 1
     DestroyOnDeath: 0
+    EquipCost: 1
   charmEffects:
   - {fileID: 11400000, guid: 3e5b1f25f0d78274fbd3af6c30ed87d8, type: 2}
+  _equipped: 0

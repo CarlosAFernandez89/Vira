@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Character.UI.Map
 {
-    public class MapUIManager : MonoBehaviour
+    public class MapUIManager : MonoBehaviour, IPlayerSubMenu
     {
         public RenderTexture mapRenderTexture; // Assign this in the Inspector
         public InputActionAsset inputActions; // Assign this in the Inspector
@@ -12,6 +14,7 @@ namespace Character.UI.Map
 
         private InputAction zoomInAction;
         private InputAction zoomOutAction;
+        private InputAction scrollWheelAction;
         private InputAction moveCameraAction;
         private InputAction dragStartAction;
         private InputAction dragDeltaAction;
@@ -26,9 +29,11 @@ namespace Character.UI.Map
         [SerializeField] GameObject owningCharacter;
         
         [Header("Zoom Settings")]
+        [SerializeField] private float defaultZoom = 10f;
         [SerializeField] private float minZoom = 5f;
-        [SerializeField] private float maxZoom = 15f;
+        [SerializeField] private float maxZoom = 25f;
         [SerializeField] private float zoomSpeed = 2f;  // Speed of zoom (adjust as needed)
+        [FormerlySerializedAs("scrollZoomSpeed")] [SerializeField] private float scrollZoomMultiplier = 5f;
         [SerializeField] private float maxZoomSpeed = 15f;    // Maximum zoom speed
         [SerializeField] private float zoomAcceleration = 5f; // How fast the zoom speed increases (adjust as needed)
         [SerializeField] private float zoomLerpSpeed = 5f; // Speed of the lerp (adjust as needed)
@@ -55,6 +60,9 @@ namespace Character.UI.Map
         [Header("Reset Camera Settings")]
         [SerializeField] private float resetSmoothTime = 0.5f; // Smoothing time for reset
         
+        
+        private bool isMapUIActive = false; // Flag to track if the map UI is active
+        
         private void Awake()
         {
             cameraZPosition = mapCamera.transform.position.z;
@@ -63,43 +71,80 @@ namespace Character.UI.Map
             // Get input actions
             zoomInAction = inputActions.FindActionMap("UI").FindAction("ZoomIn"); // Add ZoomIn and ZoomOut actions to your Input Actions
             zoomOutAction = inputActions.FindActionMap("UI").FindAction("ZoomOut");
-            moveCameraAction = inputActions.FindActionMap("UI").FindAction("Navigate"); // New action for camera movement
+            scrollWheelAction = inputActions.FindActionMap("UI").FindAction("ScrollWheel");
+            moveCameraAction = inputActions.FindActionMap("UI").FindAction("MoveCamera"); // New action for camera movement
             dragStartAction  = inputActions.FindActionMap("UI").FindAction("DragCameraStart");
             dragDeltaAction = inputActions.FindActionMap("UI").FindAction("DragCameraDelta");
-
-            // Bind actions with repetition handling
-            zoomInAction.performed += ctx => { isZoomInHeld = true; timer = 0; Zoom(1); }; // Immediate zoom on press
-            zoomInAction.canceled += ctx => isZoomInHeld = false;
-
-            zoomOutAction.performed += ctx => { isZoomOutHeld = true; timer = 0; Zoom(-1); }; // Immediate zoom on press
-            zoomOutAction.canceled += ctx => isZoomOutHeld = false;
-            
-            moveCameraAction.performed += ctx =>
-            {
-                // Determine the target position based on input
-                targetPosition += new Vector3(ctx.ReadValue<Vector2>().x, ctx.ReadValue<Vector2>().y, cameraZPosition) * moveSpeed;
-                isMoving = true;
-            };
-            
-            moveCameraAction.canceled += ctx =>
-            {
-                isMoving = false;
-            };
-            
-            // Drag camera action
-            dragStartAction.performed += ctx =>
-            {
-                dragStartMousePosition = Mouse.current.position.ReadValue();
-                isDragging = true;
-            };
-
-            dragStartAction.canceled += ctx =>
-            {
-                isDragging = false;
-            };
-            
             resetCameraAction = inputActions.FindActionMap("UI").FindAction("ResetCamera");
-            resetCameraAction.performed += ctx => ResetCamera();
+        }
+        
+        public void Initialize()
+        {
+            // Enable the input actions when the UI is active
+            isMapUIActive = true;
+            EnableInput();
+            ResetCamera(); // Move camera to player when UI is opened
+        }
+
+        public void Deinitialize()
+        {
+            // Disable the input actions when the UI is inactive
+            isMapUIActive = false;
+            DisableInput();
+        }
+        
+        private void BindInput()
+        {
+            // Bind actions using named methods
+            zoomInAction.performed += OnZoomInPerformed;
+            zoomInAction.canceled += OnZoomInCanceled;
+
+            zoomOutAction.performed += OnZoomOutPerformed;
+            zoomOutAction.canceled += OnZoomOutCanceled;
+
+            scrollWheelAction.performed += OnZoomScrollWheelPerformed;
+            scrollWheelAction.canceled += OnZoomScrollWheelCanceled;
+
+            moveCameraAction.performed += OnMoveCameraPerformed;
+            moveCameraAction.canceled += OnMoveCameraCanceled;
+
+            dragStartAction.performed += OnDragStartPerformed;
+            dragStartAction.canceled += OnDragStartCanceled;
+
+            resetCameraAction.performed += OnResetCameraPerformed;
+        }
+
+        private void UnbindInput()
+        {
+            // Unbind actions using the same named methods
+            zoomInAction.performed -= OnZoomInPerformed;
+            zoomInAction.canceled -= OnZoomInCanceled;
+
+            zoomOutAction.performed -= OnZoomOutPerformed;
+            zoomOutAction.canceled -= OnZoomOutCanceled;
+            
+            scrollWheelAction.performed -= OnZoomScrollWheelPerformed;
+            scrollWheelAction.canceled -= OnZoomScrollWheelCanceled;
+
+            moveCameraAction.performed -= OnMoveCameraPerformed;
+            moveCameraAction.canceled -= OnMoveCameraCanceled;
+
+            dragStartAction.performed -= OnDragStartPerformed;
+            dragStartAction.canceled -= OnDragStartCanceled;
+
+            resetCameraAction.performed -= OnResetCameraPerformed;
+        }
+        
+        private void EnableInput()
+        {
+            //inputActions.FindActionMap("UI").Enable();
+            BindInput();
+        }
+
+        private void DisableInput()
+        {
+            //inputActions.FindActionMap("UI").Disable();
+            UnbindInput();
         }
         
         public void InitializeMap(VisualElement root)
@@ -108,8 +153,8 @@ namespace Character.UI.Map
             mapImage = root.Q<Image>("map-image");
             mapImage.image = mapRenderTexture;
             
-            mapCamera.orthographicSize = currentZoom;
-            targetZoom = currentZoom;
+            mapCamera.orthographicSize = defaultZoom;
+            targetZoom = defaultZoom;
         }
         
         private void Update()
@@ -142,6 +187,11 @@ namespace Character.UI.Map
                 DragCamera();
             }
             
+            if (isMoving)
+            {
+                MoveCamera();
+            }
+            
             // Smoothly interpolate the orthographic size towards the target zoom
             if (mapCamera != null && mapCamera.orthographic)
             {
@@ -152,57 +202,127 @@ namespace Character.UI.Map
                 }
             }
             
-            // Only move the camera if isMoving is true or if we are still smoothing towards the target
-            if (isMoving || Vector2.Distance(mapCamera.transform.position, targetPosition) > 0.01f)
-            {
-               //MoveCamera();
-            }
         }
         
+        private void OnZoomInPerformed(InputAction.CallbackContext ctx)
+        {
+            isZoomInHeld = true;
+            timer = 0;
+            Zoom(1);
+        }
+
+        private void OnZoomInCanceled(InputAction.CallbackContext ctx)
+        {
+            isZoomInHeld = false;
+        }
+
+        private void OnZoomOutPerformed(InputAction.CallbackContext ctx)
+        {
+            isZoomOutHeld = true;
+            timer = 0;
+            Zoom(-1);
+        }
+
+        private void OnZoomOutCanceled(InputAction.CallbackContext ctx)
+        {
+            isZoomOutHeld = false;
+        }
+
+        private void OnZoomScrollWheelPerformed(InputAction.CallbackContext ctx)
+        {
+            // Read the scroll wheel delta directly from the context
+            Vector2 scrollDelta = ctx.ReadValue<Vector2>();
+
+            // Use the Y-axis value to determine the scroll direction
+            float zoomDirection = -scrollDelta.y;
+
+            // Apply the zoom direction with speed
+            Zoom(zoomDirection * scrollZoomMultiplier);
+        }
+
+        private void OnZoomScrollWheelCanceled(InputAction.CallbackContext ctx)
+        {
+            
+        }
         private void Zoom(float direction)
         {
             targetZoom = Mathf.Clamp(currentZoom + direction * zoomSpeed * repeatRate, minZoom, maxZoom);
             currentZoom = targetZoom;
         }
         
+        private void OnMoveCameraPerformed(InputAction.CallbackContext ctx)
+        {
+            if (!isMapUIActive) return;
+            
+            isMoving = true;
+        }
+
+        private void OnMoveCameraCanceled(InputAction.CallbackContext ctx)
+        {
+            isMoving = false;
+        }
+
+        private void OnDragStartPerformed(InputAction.CallbackContext ctx)
+        {
+            if (!isMapUIActive) return;
+
+            isDragging = true;
+        }
+
+        private void OnDragStartCanceled(InputAction.CallbackContext ctx)
+        {
+            if (!isMapUIActive) return;
+
+            isDragging = false;
+        }
+
+        private void OnResetCameraPerformed(InputAction.CallbackContext ctx)
+        {
+            ResetCamera();
+        }
+        
         private void MoveCamera()
         {
-            if (mapCamera != null)
+            if (mapCamera != null && !isDragging)
             {
-                // Smoothly move the camera towards the target position
-                mapCamera.transform.position = 
-                    Vector2.Lerp(mapCamera.transform.position, targetPosition, zoomLerpSpeed * Time.unscaledDeltaTime);
+                Vector2 moveInput = moveCameraAction.ReadValue<Vector2>();
+                if (moveInput != Vector2.zero)
+                {
+                    Vector3 move = new Vector3(moveInput.x, moveInput.y, 0) * moveSpeed * Time.unscaledDeltaTime;
+                    targetPosition += move;
+                    // Smoothly move the camera towards the target position
+                    mapCamera.transform.position =
+                        Vector3.Lerp(mapCamera.transform.position, targetPosition, smoothTime);
+                }
             }
         }
         
         private void DragCamera()
         {
-            if (mapCamera != null)
+            if (mapCamera != null && isDragging)
             {
-                // Read the delta from the DragDelta action
                 Vector2 mouseDelta = dragDeltaAction.ReadValue<Vector2>();
-
-                // Only move the camera if the mouse has actually moved (delta is not zero)
                 if (mouseDelta != Vector2.zero)
                 {
                     Vector3 move = new Vector3(-mouseDelta.x, -mouseDelta.y, 0) * mouseDragSpeed * Time.unscaledDeltaTime;
-                    mapCamera.transform.position += move;
+                    targetPosition += move;
+
+                    // Directly update the camera position for responsive dragging
+                    mapCamera.transform.position = Vector3.Lerp(mapCamera.transform.position, targetPosition, smoothTime);
                 }
             }
         }
         
         private void ResetCamera()
         {
-            // Set the target position to Vector3.zero (or your desired reset position)
-            targetPosition = new Vector3(owningCharacter.transform.position.x,owningCharacter.transform.position.y, cameraZPosition);
-
-            // Reset isMoving to false, as we are manually controlling the movement
-            isMoving = false;
-
-            // You can optionally reset other camera properties here, like zoom:
-            // targetZoom = initialZoom; 
-
-            Debug.Log("Camera reset initiated.");
+            // Immediately move the camera to the player's position
+            if (mapCamera != null)
+            {
+                targetPosition = new Vector3(owningCharacter.transform.position.x, owningCharacter.transform.position.y, cameraZPosition);
+                mapCamera.transform.position = targetPosition;
+                
+                targetZoom = defaultZoom;
+            }
         }
         
         // Call this when you want to take a "snapshot" of the map and update the texture

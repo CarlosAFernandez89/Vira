@@ -37,11 +37,23 @@
 
 /* Style for the tab content */
 .tab-content {
-    flex-grow: 1; /* Allow content to fill available space */
+    flex-grow: 1; /* Fills available space */
     background-color: rgb(240, 240, 240);
-    border: 2px solid black;
-    padding: 10px;
+    border: 1px solid black;
+    padding: 1px;
     font-size: 18px;
     text-align: center; /* Center content */
     color: black;
+    overflow: hidden; /* Hide content that overflows */
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Ensure the tab container does not grow excessively */
+#tab-container {
+    width: 100%; /* Fill the parent container */
+    height: 100%; /* Fill the parent container */
+    display: flex; /* Ensure it behaves as a flexible container */
+    flex-direction: column; /* Align child elements vertically */
+    overflow: hidden; /* Prevent scroll bars from appearing on the container */
 }

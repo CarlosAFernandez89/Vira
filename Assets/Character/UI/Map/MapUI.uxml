@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Character/UI/Map/MapUI.uss?fileID=7433441132597879392&amp;guid=f7f297e207a14f3aa5458c97077f7653&amp;type=3#MapUI" />
-    <ui:VisualElement name="map-container">
-        <ui:Image name="map-image" scale-mode="ScaleAndCrop" style="flex-grow: 1;" />
+    <ui:VisualElement name="map-container" style="align-self: center;">
+        <ui:Image name="map-image" scale-mode="ScaleAndCrop" style="flex-grow: 1; align-self: stretch; align-content: stretch;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -14,13 +14,15 @@ namespace Character.Abilities.Charms
         public Sprite Icon;
         public string Description;
         public bool DestroyOnDeath;
+        public int EquipCost;
 
-        private CharmInfo(string displayName, Sprite icon,string description, bool destroyOnDeath = false)
+        private CharmInfo(string displayName, Sprite icon,string description, bool destroyOnDeath = false, int equipCost = 1)
         {
             DisplayName = displayName;
             Icon = icon;
             Description = description;
             DestroyOnDeath = destroyOnDeath;
+            EquipCost = equipCost;
         }
     }
     
@@ -30,12 +32,14 @@ namespace Character.Abilities.Charms
         [Header("Charm Info")] 
         [SerializeField] public CharmInfo CharmInfo;
         [SerializeField] public List<GameplayEffectBase> charmEffects;
+        public bool _equipped = false;
 
         public override void OnAbilityGranted(AbilitySystemComponent owningAbilitySystemComponent)
         {
             base.OnAbilityGranted(owningAbilitySystemComponent);
             
             GrantCharmEffects();
+            _equipped = true;
         }
 
         private void GrantCharmEffects()
@@ -51,9 +55,11 @@ namespace Character.Abilities.Charms
 
         public override void OnAbilityRemoved(AbilitySystemComponent owningAbilitySystemComponent)
         {
-            base.OnAbilityRemoved(owningAbilitySystemComponent);
-            
             RemoveCharmEffects();
+
+            _equipped = false;
+            
+            base.OnAbilityRemoved(owningAbilitySystemComponent);
         }
 
         private void RemoveCharmEffects()
