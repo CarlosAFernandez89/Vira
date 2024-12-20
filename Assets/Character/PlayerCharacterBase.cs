@@ -1,14 +1,15 @@
 using System;
 using Character.Abilities.Charms;
+using Character.UI.Charms;
 using GameplayAbilitySystem;
 using GameplayAbilitySystem.Abilities;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Character
 {
     public class PlayerCharacterBase : MonoBehaviour, IAbilitySystemComponent
     {
-
         public AbilitySystemComponent GetAbilitySystemComponent()
         {
             return GetComponent(typeof(AbilitySystemComponent)) as AbilitySystemComponent;
@@ -47,6 +48,7 @@ namespace Character
                     charms.DeactivateOwnedCharmAbility("MaxHealthIncrease");
                 }
             }
+            
         }
     }
 }

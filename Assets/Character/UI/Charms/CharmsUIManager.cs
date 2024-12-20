@@ -5,6 +5,7 @@ using System.Linq;
 using Character.Abilities.Charms;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Character.UI.Charms
@@ -13,11 +14,12 @@ namespace Character.UI.Charms
     {
         [SerializeField] private int _maxEquippedSlots = 6;
         [SerializeField] public GameObject _player; // Reference to the player GameObject
-
-        [SerializeField] private VisualTreeAsset _charmItemAsset; // Reference to CharmItem.uxml
-
+        
+        [SerializeField] private VisualTreeAsset charmItemAsset; // Reference to CharmItemUI.uxml
+        
         private VisualElement _root;
-        private ListView _equippedCharmList;
+        private VisualElement _equippedCharmsContainer;
+        private VisualElement _topHalf;
         private ListView _allCharmsList;
         private Label _charmNameLabel;
         private VisualElement _charmImage;
@@ -30,33 +32,39 @@ namespace Character.UI.Charms
 
         private void Awake()
         {
-            _root = GetComponent<UIDocument>().rootVisualElement;
-            _equippedCharmList = _root.Q<ListView>("EquippedCharmList");
-            _allCharmsList = _root.Q<ListView>("AllCharmsList");
-            _charmNameLabel = _root.Q<Label>("CharmName");
-            _charmImage = _root.Q<VisualElement>("CharmImage");
-            _charmDescriptionLabel = _root.Q<Label>("CharmDescription");
-
-            _root.style.display = DisplayStyle.None;
+            _root = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("content-viewport");
         }
 
         private void Start()
         {
             _charmManager = _player.GetComponent<CharmManager>();
             _maxNotches = _charmManager.GetMaxCharmSlots();
+        }
+
+        public void InitializeSubMenu()
+        {
+            _equippedCharmsContainer = _root.Q<VisualElement>("EquippedCharmsContainer");
+            _topHalf = _root.Q<VisualElement>("EquippedCharms");
+            
+            _allCharmsList = _root.Q<ListView>("AllCharmsList");
+            _charmNameLabel = _root.Q<Label>("CharmName");
+            _charmImage = _root.Q<VisualElement>("CharmImage");
+            _charmDescriptionLabel = _root.Q<Label>("CharmDescription");
+            
+            Debug.LogWarning("Initializing Charms UI ...");
 
             LoadAllCharms();
 
             InitializeEquippedCharmList();
-            InitializeAllCharmsList();
+            
+            Debug.Log($"Equipped Charms Container Child Count: {_equippedCharmsContainer.childCount}");
+
+            ClearCharmInfo();
+            
+            _root.MarkDirtyRepaint();
         }
 
-        public void Initialize()
-        {
-            RefreshUI();
-        }
-
-        public void Deinitialize()
+        public void DeinitializeSubMenu()
         {
             // Any cleanup when the UI is hidden.
         }
@@ -66,45 +74,27 @@ namespace Character.UI.Charms
             // Load all CharmAbilityBase ScriptableObjects from the Resources/Charms folder
             _allCharms = Resources.LoadAll<CharmAbilityBase>("Charms").ToList();
         }
-
-        private void InitializeEquippedCharmList()
+        
+        private VisualElement CreateCharmItem(CharmAbilityBase charm)
         {
-            _equippedCharmList.fixedItemHeight = 64;
-            _equippedCharmList.itemsSource = _charmManager.GetActiveCharmAbilities();
-            _equippedCharmList.makeItem = MakeEquippedCharmItem;
-            _equippedCharmList.bindItem = BindEquippedCharmItem;
+            if (charmItemAsset == null) return null;
+            
+            VisualElement charmItem = charmItemAsset.Instantiate();
+            VisualElement cItem = charmItem.Q<VisualElement>("CharmItem");
+            VisualElement imageSlot = cItem.Q<VisualElement>("ImageSlot");
+            Button button = cItem.Q<Button>("Button");
 
-            // Refresh the ListView
-            _equippedCharmList.Rebuild();
-            Debug.Log($"Equipped ItemsSource.Count:{_equippedCharmList.itemsSource.Count}");
-        }
-
-        private VisualElement MakeEquippedCharmItem()
-        {
-            // Instantiate a new CharmItem 
-            VisualElement charmItem = _charmItemAsset.Instantiate();
-            return charmItem;
-        }
-
-        private void BindEquippedCharmItem(VisualElement element, int i)
-        {
-            CharmAbilityBase charm = _charmManager.GetActiveCharmAbilities()[i];
-
-            VisualElement imageSlot = element.Q<VisualElement>("ImageSlot");
-            Button button = element.Q<Button>("Button");
-            button.clicked += () => { };
-
-            if (charm != null)
+            if (charm != null && imageSlot != null && button != null)
             {
-                // Update the imageSlot with the charm's data
-                imageSlot.RemoveFromClassList("empty-slot");
+                // Set charm image
                 imageSlot.AddToClassList("charm-image");
                 imageSlot.style.backgroundImage = new StyleBackground(charm.CharmInfo.Icon);
 
                 // Add hover behavior
-                element.RegisterCallback<MouseEnterEvent>(evt => DisplayCharmInfo(charm));
-                element.RegisterCallback<MouseLeaveEvent>(evt => ClearCharmInfo());
-                
+                charmItem.RegisterCallback<MouseEnterEvent>(evt => DisplayCharmInfo(charm));
+                charmItem.RegisterCallback<MouseLeaveEvent>(evt => ClearCharmInfo());
+
+                // Add unequip button behavior
                 button.clicked += () =>
                 {
                     UnequipCharm(charm);
@@ -113,14 +103,42 @@ namespace Character.UI.Charms
             }
             else
             {
-                // Clear data and set as empty slot
-                imageSlot.RemoveFromClassList("charm-image");
-                imageSlot.AddToClassList("empty-slot");
-                imageSlot.style.backgroundImage = null;
+                // Empty slot
+                if (imageSlot != null)
+                {
+                    imageSlot.AddToClassList("empty-slot");
+                }
 
                 // Clear hover behavior
-                element.UnregisterCallback<MouseEnterEvent>(evt => { });
-                element.UnregisterCallback<MouseLeaveEvent>(evt => { });
+                charmItem.UnregisterCallback<MouseEnterEvent>(evt => { });
+                charmItem.UnregisterCallback<MouseLeaveEvent>(evt => { });
+
+                // Clear button behavior
+                if (button != null) button.clicked += () => { };
+            }
+
+            return charmItem;
+        }
+        
+
+        private void InitializeEquippedCharmList()
+        {
+            Label label = _topHalf.Q<Label>("TopLabel");
+            label.text = "Equipped Charms";
+            
+            Debug.Log("Initializing equipped charm list...");
+            // Clear existing children
+            _equippedCharmsContainer.Clear();
+
+            // Get equipped charms from CharmManager
+            List<CharmAbilityBase> equippedCharms = _charmManager.GetActiveCharmAbilities();
+
+            // Add equipped charms
+            for (int i = 0; i < _maxEquippedSlots; i++)
+            {
+                CharmAbilityBase charm = i < equippedCharms.Count ? equippedCharms[i] : null;
+                Debug.Log($"Adding charm slot {i}: {charm?.CharmInfo.DisplayName ?? "Empty"}");
+                _equippedCharmsContainer.Add(CreateCharmItem(charm));
             }
         }
 
@@ -130,71 +148,84 @@ namespace Character.UI.Charms
             _allCharmsList.fixedItemHeight = 64;
 
             // Assign the methods to the ListView
-            _allCharmsList.makeItem = MakeCharmItem;
-            _allCharmsList.bindItem = BindCharmItem;
-
-            // Set the list of items to display
-            _allCharmsList.itemsSource = _charmManager.GetOwnedCharmAbilities();
-
-            // Refresh the ListView
-            _allCharmsList.Rebuild();
-            Debug.Log($"All ItemsSource.Count:{_allCharmsList.itemsSource.Count}");
-
-        }
-
-        // Function to make a charm item for the All Charms list
-        private VisualElement MakeCharmItem()
-        {
-            VisualElement charmItem = _charmItemAsset.Instantiate();
-            charmItem.Q<VisualElement>("ImageSlot").AddToClassList("empty-slot");
-            return charmItem;
-        }
-
-        // Function to bind data to a charm item in the All Charms list
-        private void BindCharmItem(VisualElement e, int i)
-        {
-            VisualElement imageSlot = e.Q<VisualElement>("ImageSlot");
-            Button button = e.Q<Button>("Button");
-            button.clicked += () => { }; // Reset the clicked event
-
-            CharmAbilityBase charm = _charmManager.GetOwnedCharmAbilities()[i];
-            if (charm != null)
+            List<CharmAbilityBase> charmList = _allCharms;
+            if (charmList != null && charmList.Count > 0)
             {
-                // Owned charm
-                imageSlot.RemoveFromClassList("empty-slot");
-
-                imageSlot.AddToClassList(charm._equipped ? "equipped-charm" : "charm-image");
-
-                imageSlot.style.backgroundImage = new StyleBackground(charm.CharmInfo.Icon);
-
-                button.clicked += () =>
-                {
-                    if (charm._equipped)
-                    {
-                        UnequipCharm(charm);
-                    }
-                    else
-                    {
-                        EquipCharm(charm);
-                    }
-                };
-
-                // Add hover behavior
-                e.RegisterCallback<MouseEnterEvent>(evt => DisplayCharmInfo(charm));
-                e.RegisterCallback<MouseLeaveEvent>(evt => ClearCharmInfo());
+                _allCharmsList.itemsSource = charmList;
             }
             else
             {
-                // Empty slot (shouldn't normally happen)
-                imageSlot.RemoveFromClassList("charm-image");
-                imageSlot.RemoveFromClassList("equipped-charm");
-                imageSlot.AddToClassList("empty-slot");
+                Debug.LogError("AllCharmsListEmpty");
+            }
+            
+            _allCharmsList.makeItem = () =>
+            {
+                Debug.Log("Creating new all charm list");
+                VisualElement charmItem = charmItemAsset.Instantiate();
+                charmItem.Q<VisualElement>("ImageSlot").AddToClassList("empty-slot");
+                return charmItem;
+            };
+            
+            _allCharmsList.bindItem = (element, index) =>
+            {
+                Debug.Log($"Binding item at index: {index}");
+                CharmAbilityBase charm = _charmManager.GetOwnedCharmAbilities()[index];
+                if (charm != null)
+                {
+                    // Update the element with charm details
+                    VisualElement imageSlot = element.Q<VisualElement>("ImageSlot");
+                    imageSlot.RemoveFromClassList("empty-slot");
+                    imageSlot.AddToClassList(charm._equipped ? "equipped-charm" : "charm-image");
+                    imageSlot.style.backgroundImage = new StyleBackground(charm.CharmInfo.Icon);
+                    Debug.Log($"ImageSlot set to {imageSlot.style.backgroundImage}");
+                    
+                    
+                    // Add hover behavior
+                    element.RegisterCallback<MouseEnterEvent>(evt => DisplayCharmInfo(charm));
+                    element.RegisterCallback<MouseLeaveEvent>(evt => ClearCharmInfo());
 
-                imageSlot.style.backgroundImage = null;
+                    Button button = element.Q<Button>("Button");
+                    button.clicked += () =>
+                    {
+                        if (charm._equipped)
+                        {
+                            UnequipCharm(charm);
+                        }
+                        else
+                        {
+                            EquipCharm(charm);
+                        }
+                    };
+                }
+                else
+                {
+                    // Empty slot (shouldn't normally happen)
+                    VisualElement imageSlot = element.Q<VisualElement>("ImageSlot");
+                    imageSlot.RemoveFromClassList("charm-image");
+                    imageSlot.RemoveFromClassList("equipped-charm");
+                    imageSlot.AddToClassList("empty-slot");
 
-                // Clear hover behavior
-                e.UnregisterCallback<MouseEnterEvent>(evt => { });
-                e.UnregisterCallback<MouseLeaveEvent>(evt => { });
+                    imageSlot.style.backgroundImage = null;
+
+                    // Clear hover behavior
+                    element.UnregisterCallback<MouseEnterEvent>(evt => { });
+                    element.UnregisterCallback<MouseLeaveEvent>(evt => { });
+                    
+                    // Clear Button behavior
+                    Button button = element.Q<Button>("Button");
+                    button.clicked += () => { };
+                }
+            };
+            
+            if (_allCharmsList.itemsSource == null || _allCharmsList.itemsSource.Count == 0)
+            {
+                Debug.LogWarning("itemsSource is null or empty!");
+            }
+            else
+            {
+                Debug.Log("Rebuilding all charm list");
+                Debug.Log($"AllCharmList item count: {_allCharmsList.itemsSource?.Count}");
+                _allCharmsList.Rebuild();
             }
         }
 
@@ -208,7 +239,7 @@ namespace Character.UI.Charms
             }
 
             // 2. Add the charm to the CharmManager's active charms list.
-            _charmManager.ActivateOwnedCharmAbility(charm.name);
+            _charmManager.ActivateOwnedCharmAbility(charm.CharmInfo.DisplayName);
 
             // 3. Refresh the UI
             RefreshUI();
@@ -217,7 +248,7 @@ namespace Character.UI.Charms
         private void UnequipCharm(CharmAbilityBase charm)
         {
             // 1. Remove the charm from the CharmManager's active charms list.
-            _charmManager.DeactivateOwnedCharmAbility(charm.name);
+            _charmManager.DeactivateOwnedCharmAbility(charm.CharmInfo.DisplayName);
 
             // 2. Refresh the UI
             RefreshUI();
@@ -249,8 +280,9 @@ namespace Character.UI.Charms
         public void RefreshUI()
         {
             _notchesUsed = _charmManager.GetActiveCharmAbilities().Sum(c => c.CharmInfo.EquipCost);
-            _equippedCharmList.Rebuild();
             _allCharmsList.Rebuild();
+            InitializeEquippedCharmList();
+
         }
     }
 }

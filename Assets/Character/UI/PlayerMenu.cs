@@ -9,10 +9,10 @@ namespace Character.UI
 {
     public interface IPlayerSubMenu
     {
-        void Initialize();
-        void Deinitialize();
+        void InitializeSubMenu();
+        void DeinitializeSubMenu();
     }
-    
+
     public class PlayerMenu : MonoBehaviour
     {
         private bool _isInitialized = false;
@@ -21,26 +21,33 @@ namespace Character.UI
         public InputActionAsset inputActions;
         public MapUIManager mapManager;
         public VisualTreeAsset mapUIAsset;
-        
+
         public CharmsUIManager charmsUIManager;
         public VisualTreeAsset charmsUIAsset;
-        
+
         private VisualElement _root;
         private VisualElement _contentViewport;
         private Button[] _tabButtons;
         private VisualElement[] _tabPanels;
-        
+
         private Button _previousTabButton;
         private Label _currentTabNameLabel;
         private Button _nextTabButton;
-        
-        // Store tab names and content
+
+        // Store tab names
         private List<string> _tabNames = new List<string>();
-        private List<VisualElement> _tabContent = new List<VisualElement>();
-        
+
+        // Dictionary to track if a tab's content has been initialized
+        private Dictionary<int, bool> _tabInitialized = new Dictionary<int, bool>();
+
+        // Dictionary to hold VisualTreeAsset references for each tab
+        private Dictionary<int, VisualTreeAsset> _tabUIAssets = new Dictionary<int, VisualTreeAsset>();
+
+        private Dictionary<int, IPlayerSubMenu> _subUIs = new Dictionary<int, IPlayerSubMenu>(); // Dictionary to hold sub-UI instances
+
         private int _selectedTabIndex = 0;
         private int _lastSelectedTabIndex = 0;
-        
+
         private InputAction _navigateAction;
         private InputAction _submitAction;
         private InputAction _nextTabAction;
@@ -48,9 +55,7 @@ namespace Character.UI
         private InputAction _closePlayerMenuAction;
 
         private float _defaultTimeScale;
-        
-        private Dictionary<int, IPlayerSubMenu> _subUIs = new Dictionary<int, IPlayerSubMenu>(); // Dictionary to hold sub-UI instances
-        
+
         private void Awake()
         {
             // Get references from the Input Actions asset
@@ -63,65 +68,37 @@ namespace Character.UI
             // Set up UI elements
             _root = uiDocument.rootVisualElement;
             _contentViewport = _root.Q<VisualElement>("content-viewport");
-        
+
             _previousTabButton = _root.Q<Button>("previous-tab-button");
             _currentTabNameLabel = _root.Q<Label>("current-tab-name");
             _nextTabButton = _root.Q<Button>("next-tab-button");
-            
+
             _root.style.display = DisplayStyle.None;
+
+            // Initialize tab data (but don't create content yet)
+            InitializeTabData();
         }
-        
-        private void InitializeUI()
+
+        private void InitializeTabData()
         {
-           
-            if (charmsUIAsset != null)
-            {
+            // Charms Tab
+            int charmsTabIndex = AddTab("Charms");
+            _tabUIAssets.Add(charmsTabIndex, charmsUIAsset); // Store the asset
+            _subUIs.Add(charmsTabIndex, charmsUIManager);
 
-                VisualElement charmUIRoot = charmsUIAsset.Instantiate().Q<VisualElement>("CharmUI");
-                
-                int index = AddTab("Charms", charmUIRoot);
-                
-                charmsUIManager.Initialize();
-                
-                _subUIs.Add(index, charmsUIManager);
-                
-            }
-            else
-            {
-                Debug.LogError("CharmUIAsset not assigned in the Inspector!");
-            }
-            
-            // Add the map tab
-            if (mapUIAsset != null)
-            {
-                VisualElement mapUIRoot = mapUIAsset.Instantiate().Q<VisualElement>("map-container");
-                
-                // Add the "Map" tab
-                int mapTabIndex = AddTab("Map", mapUIRoot); // Capture the tab index
-
-                // Pass the root element of the Map UI to the MapUIManager
-                mapManager.InitializeMap(mapUIRoot);
-
-                // Add MapUIManager to the dictionary of sub-UIs using the tab index as the key
-                _subUIs.Add(mapTabIndex, mapManager);
-            }
-            else
-            {
-                Debug.LogError("MapUIAsset not assigned in the Inspector!");
-            }
-            
-            
-            // Initial tab selection
-            SelectTab(_lastSelectedTabIndex);
+            // Map Tab
+            int mapTabIndex = AddTab("Map");
+            _tabUIAssets.Add(mapTabIndex, mapUIAsset); // Store the asset
+            _subUIs.Add(mapTabIndex, mapManager);
             
         }
-        
+
         private void OnDisable()
         {
             // Disable input actions when this script is disabled.
             inputActions.FindActionMap("UI").Disable();
         }
-        
+
         public void TogglePlayerMenu()
         {
             if (_root != null && _root.style.display == DisplayStyle.None)
@@ -133,50 +110,47 @@ namespace Character.UI
                 DisableMenu();
             }
         }
-        
+
         private void BindInputActions()
         {
             // Register callbacks
             _previousTabButton.clicked += ClickSelectPreviousTab;
             _previousTabAction.performed += SelectPreviousTab;
-        
+
             _nextTabButton.clicked += ClickSelectNextTab;
             _nextTabAction.performed += SelectNextTab;
 
             _closePlayerMenuAction.performed += DisableMenuAction;
         }
-        
+
         private void UnbindInputActions()
         {
             _previousTabButton.clicked -= ClickSelectPreviousTab;
             _previousTabAction.performed -= SelectPreviousTab;
-        
+
             _nextTabButton.clicked -= ClickSelectNextTab;
             _nextTabAction.performed -= SelectNextTab;
+
+            _closePlayerMenuAction.performed -= DisableMenuAction;
         }
-        
+
         private void EnableMenu()
         {
-            InitializeUI();
-            
             // Pause the game
             _defaultTimeScale = Time.timeScale;
             Time.timeScale = 0;
-            
+
             // Show the UI
             _root.style.display = DisplayStyle.Flex;
-        
+
             // Enable the Action Map
             inputActions.FindActionMap("Player").Disable();
             inputActions.FindActionMap("UI").Enable();
             BindInputActions();
-            
-            // Initialize the currently selected tab's sub-UI
-            if (_subUIs.ContainsKey(_selectedTabIndex))
-            {
-                _subUIs[_selectedTabIndex]?.Initialize();
-            }
-        
+
+            // Select the initial tab (or previously selected tab)
+            SelectTab(_lastSelectedTabIndex);
+
             // Set initial focus (optional, depending on your desired behavior)
             _nextTabButton.Focus();
         }
@@ -185,33 +159,27 @@ namespace Character.UI
         {
             DisableMenu();
         }
-        
+
         private void DisableMenu()
         {
             Time.timeScale = _defaultTimeScale;
-            
+
             // Hide the UI
             _root.style.display = DisplayStyle.None;
-        
+
             UnbindInputActions();
             // Disable the Action Map
             inputActions.FindActionMap("UI").Disable();
             inputActions.FindActionMap("Player").Enable();
-            
-            // Deinitialize the currently selected tab's sub-UI
-            if (_subUIs.ContainsKey(_selectedTabIndex))
-            {
-                _subUIs[_selectedTabIndex]?.Deinitialize();
-            }
+
+            // Deinitialize the currently selected tab (if any)
+            DeinitializeCurrentTab();
         }
-        
+
         private void SelectTab(int index)
         {
-            // Deinitialize the previously selected tab's sub-UI (if any)
-            if (_subUIs.ContainsKey(_selectedTabIndex))
-            {
-                _subUIs[_selectedTabIndex]?.Deinitialize();
-            }
+            // Deinitialize the previously selected tab (if any)
+            DeinitializeCurrentTab();
 
             _selectedTabIndex = index;
             _lastSelectedTabIndex = _selectedTabIndex;
@@ -221,32 +189,78 @@ namespace Character.UI
             _previousTabButton.text = _tabNames[(index - 1 + _tabNames.Count) % _tabNames.Count];
             _nextTabButton.text = _tabNames[(index + 1) % _tabNames.Count];
 
-            // Ensure no duplicate content is added
-            if (!_contentViewport.Contains(_tabContent[index]))
-            {
-                _contentViewport.Clear();
-                _contentViewport.Add(_tabContent[index]);
-            }
-
-            // Initialize the newly selected tab's sub-UI (if any)
-            if (_subUIs.ContainsKey(_selectedTabIndex))
-            {
-                _subUIs[_selectedTabIndex]?.Initialize();
-            }
+            // Initialize the newly selected tab (if not already initialized)
+            InitializeTabContent(index);
 
             // Move focus to the next tab button
             _nextTabButton.Focus();
         }
-        
-        // Helper method to add tabs
-        public int AddTab(string tabName, VisualElement content)
+
+        private void DeinitializeCurrentTab()
+        {
+            if (_subUIs.ContainsKey(_selectedTabIndex) && _tabInitialized[_selectedTabIndex])
+            {
+                _subUIs[_selectedTabIndex]?.DeinitializeSubMenu();
+                _contentViewport.Clear(); // Clear the content from the viewport
+                _tabInitialized[_selectedTabIndex] = false;
+            }
+        }
+
+        private void InitializeTabContent(int index)
+        {
+            if (!_tabInitialized[index])
+            {
+                // 1. Get the correct VisualTreeAsset for the tab
+                VisualTreeAsset uiAsset = _tabUIAssets[index];
+
+                // 2. Instantiate the content
+                VisualElement content = null;
+                if (index == 0) // Assuming 0 is the Charms tab
+                {
+                    content = uiAsset.Instantiate().Q<VisualElement>("CharmUI");
+                    
+                    // Check if content was found
+                    if (content == null)
+                    {
+                        Debug.LogError($"Could not find root element 'CharmUI' in {uiAsset.name}. " +
+                                       $"Check the name of the root element in your UXML file.");
+                        return;
+                    }
+                }
+                else if (index == 1) // Assuming 1 is the Map tab
+                {
+                    content = uiAsset.Instantiate().Q<VisualElement>("map-container");
+                }
+                
+                _contentViewport.Add(content);
+
+                // 3. Initialize the sub-UI (with a delay for Charms)
+                if (index == 0 ) // Charms tab
+                {
+                    if (_subUIs.ContainsKey(index))
+                    {
+                        _subUIs[index].InitializeSubMenu();
+                    }
+                }
+                else if (index == 1)
+                {
+                    mapManager.InitializeMap(content); // Pass the root element of the Map UI
+                }
+
+                // 4. Mark the tab as initialized
+                _tabInitialized[index] = true;
+            }
+        }
+
+        // Helper method to add tabs (only sets up the name)
+        public int AddTab(string tabName)
         {
             int newTabIndex = _tabNames.Count;
             _tabNames.Add(tabName);
-            _tabContent.Add(content);
+            _tabInitialized[newTabIndex] = false; // Initially not initialized
             return newTabIndex;
         }
-        
+
         private void ClickSelectNextTab()
         {
             SelectTab((_selectedTabIndex + 1) % _tabNames.Count);

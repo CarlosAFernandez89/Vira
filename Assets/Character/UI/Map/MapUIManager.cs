@@ -78,7 +78,7 @@ namespace Character.UI.Map
             resetCameraAction = inputActions.FindActionMap("UI").FindAction("ResetCamera");
         }
         
-        public void Initialize()
+        public void InitializeSubMenu()
         {
             // Enable the input actions when the UI is active
             isMapUIActive = true;
@@ -86,7 +86,7 @@ namespace Character.UI.Map
             ResetCamera(); // Move camera to player when UI is opened
         }
 
-        public void Deinitialize()
+        public void DeinitializeSubMenu()
         {
             // Disable the input actions when the UI is inactive
             isMapUIActive = false;

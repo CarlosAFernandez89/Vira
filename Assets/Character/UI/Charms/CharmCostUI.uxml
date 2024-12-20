@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Character/UI/Charms/CharmCostUI.uss?fileID=7433441132597879392&amp;guid=efe7ca2608da413a8cb600649b25fde5&amp;type=3#CharmCostUI" />
-    <ui:VisualElement name="CharmCost" style="width: 15px; height: 22px; margin-bottom: 2px; -unity-background-scale-mode: scale-and-crop; margin-left: 2px;">
-        <ui:VisualElement name="EmptyImage" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; -unity-background-scale-mode: scale-and-crop;" />
-        <ui:VisualElement name="FilledImage" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; -unity-background-scale-mode: scale-and-crop;" />
-    </ui:VisualElement>
-</ui:UXML>

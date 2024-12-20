@@ -1,7 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Character/UI/Charms/EquippedCharmSlotUI.uss?fileID=7433441132597879392&amp;guid=944074dc46944be0a7b3b3b23d3a662a&amp;type=3#EquippedCharmSlotUI" />
-    <ui:VisualElement name="EquippedCharmSlot" style="width: 50px; height: 50px; margin-bottom: 2px; -unity-background-scale-mode: scale-and-crop;">
-        <ui:VisualElement name="EmptyImage" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; -unity-background-scale-mode: scale-and-crop;" />
-        <ui:VisualElement name="CharmImage" style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; -unity-background-scale-mode: scale-and-crop;" />
-    </ui:VisualElement>
-</ui:UXML>
