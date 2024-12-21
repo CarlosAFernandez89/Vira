@@ -2,9 +2,9 @@
     <Style src="project://database/Assets/Character/UI/PlayerMenu.uss?fileID=7433441132597879392&amp;guid=a31bb276695a4794b1b85e4b2116189c&amp;type=3#PlayerMenu" />
     <ui:VisualElement name="tab-container" style="display: flex; flex-direction: column;">
         <ui:VisualElement name="tab-header" class="tab-header" style="margin-bottom: 0;">
-            <ui:Button name="previous-tab-button" text="Previous Tab Name" class="tab-button side-tab-button" />
+            <ui:Button name="previous-tab-button" text="Previous Tab Name" focusable="false" class="tab-button side-tab-button" />
             <ui:Label name="current-tab-name" text="Current Tab Name" class="current-tab-name" style="-unity-text-align: upper-center;" />
-            <ui:Button name="next-tab-button" text="Next Tab Name" class="tab-button side-tab-button" />
+            <ui:Button name="next-tab-button" text="Next Tab Name" focusable="false" class="tab-button side-tab-button" />
         </ui:VisualElement>
         <ui:VisualElement name="content-viewport" style="width: 100%; height: 100%; background-color: rgba(26, 26, 26, 0.18);">
             <ui:Image name="map-image" scale-mode="ScaleAndCrop" style="flex-grow: 1;" />

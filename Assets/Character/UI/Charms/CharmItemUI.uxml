@@ -2,6 +2,6 @@
     <Style src="project://database/Assets/Character/UI/Charms/CharmItemUI.uss?fileID=7433441132597879392&amp;guid=dd55eb0cdb9146d2836e9a0a60caf35f&amp;type=3#CharmItemUI" />
     <ui:VisualElement name="CharmItem" class="charm-item">
         <ui:VisualElement name="ImageSlot" class="image-slot" />
-        <ui:Button name="Button" text=" " class="charm-button" />
+        <ui:Button name="Button" text=" " selectable="true" class="charm-button button" />
     </ui:VisualElement>
 </ui:UXML>

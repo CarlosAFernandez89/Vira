@@ -117,7 +117,7 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "01cde139-3a17-435b-9d3a-bc6d7511f831",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -1336,10 +1336,10 @@
                 {
                     "name": "",
                     "id": "1d9fb118-5cbb-4ade-bc3e-30f371036358",
-                    "path": "*/{Submit}",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": "Gamepad;Touch;Joystick;XR",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1347,10 +1347,10 @@
                 {
                     "name": "",
                     "id": "f45a7f5c-62e9-43ef-9966-cb4b8b5af096",
-                    "path": "*/{Cancel}",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": "Gamepad;Touch;Joystick;XR",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false

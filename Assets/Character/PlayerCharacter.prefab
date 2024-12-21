@@ -867,8 +867,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxEquippedSlots: 6
   _player: {fileID: 7622947136239430374}
+  inputActions: {fileID: -944628639613478452, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   charmItemAsset: {fileID: 9197481963319205126, guid: 0eb93194aa584bc58295f7e1adabc193, type: 3}
-  _maxNotches: 0
+  _maxNotches: 6
 --- !u!1 &9184493277087061484
 GameObject:
   m_ObjectHideFlags: 0

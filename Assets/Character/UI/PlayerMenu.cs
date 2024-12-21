@@ -152,7 +152,7 @@ namespace Character.UI
             SelectTab(_lastSelectedTabIndex);
 
             // Set initial focus (optional, depending on your desired behavior)
-            _nextTabButton.Focus();
+            //_nextTabButton.Focus();
         }
 
         private void DisableMenuAction(InputAction.CallbackContext context)
@@ -193,7 +193,7 @@ namespace Character.UI
             InitializeTabContent(index);
 
             // Move focus to the next tab button
-            _nextTabButton.Focus();
+            //_nextTabButton.Focus();
         }
 
         private void DeinitializeCurrentTab()
@@ -244,6 +244,10 @@ namespace Character.UI
                 }
                 else if (index == 1)
                 {
+                    if (_subUIs.ContainsKey(index))
+                    {
+                        _subUIs[index].InitializeSubMenu();
+                    }
                     mapManager.InitializeMap(content); // Pass the root element of the Map UI
                 }
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Character.Abilities.Charms;
+using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
@@ -14,13 +16,17 @@ namespace Character.UI.Charms
     {
         [SerializeField] private int _maxEquippedSlots = 6;
         [SerializeField] public GameObject _player; // Reference to the player GameObject
-        
+        [SerializeField] private InputActionAsset inputActions;
         [SerializeField] private VisualTreeAsset charmItemAsset; // Reference to CharmItemUI.uxml
         
         private VisualElement _root;
-        private VisualElement _equippedCharmsContainer;
+        
         private VisualElement _topHalf;
-        private ListView _allCharmsList;
+        private VisualElement _equippedCharmsContainer;
+        
+        private VisualElement _bottomHalf;
+        private VisualElement _allCharmsContainer;
+        
         private Label _charmNameLabel;
         private VisualElement _charmImage;
         private Label _charmDescriptionLabel;
@@ -29,10 +35,15 @@ namespace Character.UI.Charms
         private List<CharmAbilityBase> _allCharms = new List<CharmAbilityBase>();
         private int _notchesUsed = 0;
         public int _maxNotches;
+        
+        private InputAction _navigateAction;
+        private InputAction _submitAction;
 
         private void Awake()
         {
             _root = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("content-viewport");
+            _navigateAction = inputActions.FindActionMap("UI").FindAction("Navigate");
+            _submitAction = inputActions.FindActionMap("UI").FindAction("Submit");
         }
 
         private void Start()
@@ -43,23 +54,26 @@ namespace Character.UI.Charms
 
         public void InitializeSubMenu()
         {
-            _equippedCharmsContainer = _root.Q<VisualElement>("EquippedCharmsContainer");
             _topHalf = _root.Q<VisualElement>("EquippedCharms");
+            _equippedCharmsContainer = _root.Q<VisualElement>("EquippedCharmsContainer");
             
-            _allCharmsList = _root.Q<ListView>("AllCharmsList");
+            _bottomHalf = _root.Q<VisualElement>("BottomHalf");
+            _allCharmsContainer = _root.Q<VisualElement>("AllCharmsContainer");
+            
             _charmNameLabel = _root.Q<Label>("CharmName");
             _charmImage = _root.Q<VisualElement>("CharmImage");
             _charmDescriptionLabel = _root.Q<Label>("CharmDescription");
             
-            Debug.LogWarning("Initializing Charms UI ...");
+            BindInputActions();
 
             LoadAllCharms();
 
             InitializeEquippedCharmList();
+            InitializeAllCharmList();
             
-            Debug.Log($"Equipped Charms Container Child Count: {_equippedCharmsContainer.childCount}");
-
             ClearCharmInfo();
+            
+            FocusOnFirstEquippedCharm();
             
             _root.MarkDirtyRepaint();
         }
@@ -67,6 +81,18 @@ namespace Character.UI.Charms
         public void DeinitializeSubMenu()
         {
             // Any cleanup when the UI is hidden.
+            
+            UnbindInputActions();
+        }
+
+        private void BindInputActions()
+        {
+            _submitAction.performed += OnSelect;
+        }
+
+        private void UnbindInputActions()
+        {
+            _submitAction.performed -= OnSelect;
         }
 
         private void LoadAllCharms()
@@ -74,8 +100,8 @@ namespace Character.UI.Charms
             // Load all CharmAbilityBase ScriptableObjects from the Resources/Charms folder
             _allCharms = Resources.LoadAll<CharmAbilityBase>("Charms").ToList();
         }
-        
-        private VisualElement CreateCharmItem(CharmAbilityBase charm)
+
+        private VisualElement CreateCharmItem(CharmAbilityBase charm, bool isEquipped = true)
         {
             if (charmItemAsset == null) return null;
             
@@ -93,13 +119,35 @@ namespace Character.UI.Charms
                 // Add hover behavior
                 charmItem.RegisterCallback<MouseEnterEvent>(evt => DisplayCharmInfo(charm));
                 charmItem.RegisterCallback<MouseLeaveEvent>(evt => ClearCharmInfo());
-
+                
+                button.name = charm.CharmInfo.DisplayName;
+                button.focusable = true;
+                
+                button.RegisterCallback<FocusEvent>(evt =>
+                {
+                    DisplayCharmInfo(charm);
+                    
+                });
+                button.RegisterCallback<BlurEvent>(evt =>
+                {
+                    ClearCharmInfo();
+                });
+                
                 // Add unequip button behavior
                 button.clicked += () =>
                 {
-                    UnequipCharm(charm);
+                    if (isEquipped)
+                    {
+                        UnequipCharm(charm);
+                    }
+                    else
+                    {
+                        EquipCharm(charm);
+                    }
+                    
                     RefreshUI(); // Refresh the UI to update the lists
                 };
+                
             }
             else
             {
@@ -112,6 +160,9 @@ namespace Character.UI.Charms
                 // Clear hover behavior
                 charmItem.UnregisterCallback<MouseEnterEvent>(evt => { });
                 charmItem.UnregisterCallback<MouseLeaveEvent>(evt => { });
+                
+                charmItem.UnregisterCallback<FocusEvent>(evt => { });
+                charmItem.UnregisterCallback<BlurEvent>(evt => { });
 
                 // Clear button behavior
                 if (button != null) button.clicked += () => { };
@@ -126,7 +177,6 @@ namespace Character.UI.Charms
             Label label = _topHalf.Q<Label>("TopLabel");
             label.text = "Equipped Charms";
             
-            Debug.Log("Initializing equipped charm list...");
             // Clear existing children
             _equippedCharmsContainer.Clear();
 
@@ -137,95 +187,24 @@ namespace Character.UI.Charms
             for (int i = 0; i < _maxEquippedSlots; i++)
             {
                 CharmAbilityBase charm = i < equippedCharms.Count ? equippedCharms[i] : null;
-                Debug.Log($"Adding charm slot {i}: {charm?.CharmInfo.DisplayName ?? "Empty"}");
                 _equippedCharmsContainer.Add(CreateCharmItem(charm));
             }
         }
 
-        private void InitializeAllCharmsList()
+        private void InitializeAllCharmList()
         {
-            // Set the item height for the ListView
-            _allCharmsList.fixedItemHeight = 64;
-
-            // Assign the methods to the ListView
-            List<CharmAbilityBase> charmList = _allCharms;
-            if (charmList != null && charmList.Count > 0)
-            {
-                _allCharmsList.itemsSource = charmList;
-            }
-            else
-            {
-                Debug.LogError("AllCharmsListEmpty");
-            }
+            Label label = _bottomHalf.Q<Label>("BottomLabel");
+            label.text = "Owned Charms";
             
-            _allCharmsList.makeItem = () =>
-            {
-                Debug.Log("Creating new all charm list");
-                VisualElement charmItem = charmItemAsset.Instantiate();
-                charmItem.Q<VisualElement>("ImageSlot").AddToClassList("empty-slot");
-                return charmItem;
-            };
+            _allCharmsContainer.Clear();
             
-            _allCharmsList.bindItem = (element, index) =>
-            {
-                Debug.Log($"Binding item at index: {index}");
-                CharmAbilityBase charm = _charmManager.GetOwnedCharmAbilities()[index];
-                if (charm != null)
-                {
-                    // Update the element with charm details
-                    VisualElement imageSlot = element.Q<VisualElement>("ImageSlot");
-                    imageSlot.RemoveFromClassList("empty-slot");
-                    imageSlot.AddToClassList(charm._equipped ? "equipped-charm" : "charm-image");
-                    imageSlot.style.backgroundImage = new StyleBackground(charm.CharmInfo.Icon);
-                    Debug.Log($"ImageSlot set to {imageSlot.style.backgroundImage}");
-                    
-                    
-                    // Add hover behavior
-                    element.RegisterCallback<MouseEnterEvent>(evt => DisplayCharmInfo(charm));
-                    element.RegisterCallback<MouseLeaveEvent>(evt => ClearCharmInfo());
+            List<CharmAbilityBase> allCharms = _charmManager.GetOwnedCharmAbilities();
 
-                    Button button = element.Q<Button>("Button");
-                    button.clicked += () =>
-                    {
-                        if (charm._equipped)
-                        {
-                            UnequipCharm(charm);
-                        }
-                        else
-                        {
-                            EquipCharm(charm);
-                        }
-                    };
-                }
-                else
-                {
-                    // Empty slot (shouldn't normally happen)
-                    VisualElement imageSlot = element.Q<VisualElement>("ImageSlot");
-                    imageSlot.RemoveFromClassList("charm-image");
-                    imageSlot.RemoveFromClassList("equipped-charm");
-                    imageSlot.AddToClassList("empty-slot");
-
-                    imageSlot.style.backgroundImage = null;
-
-                    // Clear hover behavior
-                    element.UnregisterCallback<MouseEnterEvent>(evt => { });
-                    element.UnregisterCallback<MouseLeaveEvent>(evt => { });
-                    
-                    // Clear Button behavior
-                    Button button = element.Q<Button>("Button");
-                    button.clicked += () => { };
-                }
-            };
-            
-            if (_allCharmsList.itemsSource == null || _allCharmsList.itemsSource.Count == 0)
+            for (int i = 0; i < _allCharms.Count; i++)
             {
-                Debug.LogWarning("itemsSource is null or empty!");
-            }
-            else
-            {
-                Debug.Log("Rebuilding all charm list");
-                Debug.Log($"AllCharmList item count: {_allCharmsList.itemsSource?.Count}");
-                _allCharmsList.Rebuild();
+                CharmAbilityBase charm = i < allCharms.Count ? allCharms[i] : null;
+                bool equipped = _charmManager.GetActiveCharmAbilities().Contains(allCharms[i]);
+                _allCharmsContainer.Add(CreateCharmItem(charm, equipped));
             }
         }
 
@@ -280,9 +259,56 @@ namespace Character.UI.Charms
         public void RefreshUI()
         {
             _notchesUsed = _charmManager.GetActiveCharmAbilities().Sum(c => c.CharmInfo.EquipCost);
-            _allCharmsList.Rebuild();
             InitializeEquippedCharmList();
+            InitializeAllCharmList();
+            FocusOnFirstEquippedCharm();
+        }
+        
+        private void FocusOnFirstEquippedCharm()
+        {
+            if (_equippedCharmsContainer.childCount > 0)
+            {
+                _root.schedule.Execute(() =>
+                {
+                    foreach (VisualElement charmItem in _equippedCharmsContainer.Children())
+                    {
+                        Button buttonInCharmItem = charmItem.Q<Button>();
+                        if (buttonInCharmItem != null)
+                        {
+                            buttonInCharmItem.focusable = true;
+                            buttonInCharmItem.Focus();
+                            Debug.Log($"Focused Element: {_root.focusController.focusedElement}");
+                            return;
+                        }
+                    }
+                });
+            }
+        }
+        
+        private void OnSelect(InputAction.CallbackContext context)
+        {
+            // Get the currently focused element
+            Focusable focusedElement = _root.focusController.focusedElement;
 
+            if (focusedElement is Button button)
+            {
+                // Trigger the click event directly on the focused button
+                button.SendEvent(new ClickEvent());
+                button.SendEvent(new BlurEvent());
+            }
+            else if (focusedElement is VisualElement visualElement)
+            {
+                // Try to find a button within the focused VisualElement
+                Button buttonInElement = visualElement.Q<Button>();
+                if (buttonInElement != null)
+                {
+                    // Trigger the click event on the found button
+                    buttonInElement.SendEvent(new ClickEvent());
+                    buttonInElement.SendEvent(new BlurEvent());
+                }
+            }
+            
+            ClearCharmInfo();
         }
     }
 }
