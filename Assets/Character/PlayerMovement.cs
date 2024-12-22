@@ -25,6 +25,9 @@ namespace Character
         [SerializeField] private Collider2D bodyCollider;
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference jumpAction;
+
+        [Header("Movement Settings")] 
+        [SerializeField] private float verticalDeadZone = 0.85f;
         
         //Movement
         private Vector2 _moveVelocity;
@@ -166,6 +169,13 @@ namespace Character
                 case MovementState.Grounded:
                 {
                     Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
+
+                    // Ignore movement since we are inputing an upward direction.
+                    if (Mathf.Abs(moveInput.y) > verticalDeadZone
+                        || Mathf.Abs(moveInput.x) < 0.2f)
+                    {
+                        moveInput = Vector2.zero;
+                    }
                 
                     if (moveInput != Vector2.zero)
                     {
@@ -187,6 +197,12 @@ namespace Character
                 case MovementState.Airborne:
                 {
                     Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
+                    
+                    // Ignore movement since we are inputing an upward direction.
+                    if (Mathf.Abs(moveInput.y) > verticalDeadZone)
+                    {
+                        moveInput = Vector2.zero;
+                    }
                 
                     if (moveInput != Vector2.zero)
                     {

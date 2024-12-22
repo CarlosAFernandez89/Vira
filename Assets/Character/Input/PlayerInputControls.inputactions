@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "7a942fa0-6206-42e8-ba7d-6b7f9ea0136f",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "StickDeadzone",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -47,8 +47,8 @@
                     "id": "5725afaf-2bd6-4451-ac0f-68a460de8cda",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold",
-                    "initialStateCheck": false
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Crouch",
@@ -1616,6 +1616,65 @@
                     "processors": "",
                     "groups": ";Gamepad;Touch;Joystick;XR",
                     "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Dialogue",
+            "id": "25cb187c-32a3-472c-8046-f58837a5005f",
+            "actions": [
+                {
+                    "name": "ExitDialogue",
+                    "type": "Button",
+                    "id": "317a5d4d-4dd8-45a6-910f-d225706f2dcf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Submit",
+                    "type": "Button",
+                    "id": "488022f3-ed78-456c-812c-d9798d18111a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ed8d70d4-24c8-4eec-bdca-5ed71e054e78",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ExitDialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d11ca95e-e8f0-48af-8e78-fe5152d946a8",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Touch;Joystick;XR",
+                    "action": "ExitDialogue",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d30d478a-314a-4adb-9f16-854a2ce57b05",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Touch;Joystick;XR",
+                    "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

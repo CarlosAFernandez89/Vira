@@ -95,8 +95,8 @@ namespace GameplayAbilitySystem.Abilities
     
     public abstract class GameplayAbilityBase : ScriptableObject, IAnimationEventListener
     {
-        private Animator _animator;
-        private static readonly int IsAbilityOverride = Animator.StringToHash("isAbilityOverride");
+        protected Animator _animator;
+        protected static readonly int IsAbilityOverride = Animator.StringToHash("isAbilityOverride");
 
         [Header("Base Ability Settings")]
         [SerializeField] public InputActionReference inputAction;
@@ -468,7 +468,7 @@ namespace GameplayAbilitySystem.Abilities
             OnAbilityCooldownEnd?.Invoke(user);
         }
 
-        private IEnumerator CallAfterAnimationDone(float waitTime, GameObject user)
+        protected IEnumerator CallAfterAnimationDone(float waitTime, GameObject user)
         {
             yield return new WaitForSeconds(waitTime);
 

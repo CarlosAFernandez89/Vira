@@ -1,0 +1,9 @@
+<engine:UXML xmlns:engine="UnityEngine.UIElements" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dialogue/UI/DialogueUI.uss?fileID=7433441132597879392&amp;guid=1d28c7986d824ab38c3ca09101cddfbc&amp;type=3#DialogueUI" />
+    <engine:VisualElement name="dialogue-ui" class="dialogue-ui">
+        <engine:VisualElement name="dialogue-container" class="dialogue-container">
+            <engine:Label name="dialogue-text" text="Dialogue Text" class="dialogue-text" />
+        </engine:VisualElement>
+        <engine:VisualElement name="dialogue-choices-container" class="dialogue-choices-container" />
+    </engine:VisualElement>
+</engine:UXML>

@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6179b208bc4d4a04bb1641fc6abf54cf, type: 3}
+  m_Name: GA Player Melee Attack
+  m_EditorClassIdentifier: 
+  inputAction: {fileID: 7065405839081617412, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  activateOnGranted: 0
+  gameplayEffects:
+  - {fileID: 11400000, guid: 63e70adb024dbbd4fb1bd05b9e33c307, type: 2}
+  cooldown: 0.25
+  abilityCost:
+    attribute: 
+    amount: 0
+  endAbilityOnAnimationEnd: 1
+  abilityAnimation: {fileID: 0}
+  AbilityTags:
+    m_SerializedExplicitTags: []
+  CancelAbilitiesWithTag:
+    m_SerializedExplicitTags: []
+  BlockAbilitiesWithTag:
+    m_SerializedExplicitTags: []
+  ActivationOwnedTags:
+    m_SerializedExplicitTags: []
+  ActivationRequiredTags:
+    m_SerializedExplicitTags: []
+  ActivationBlockedTags:
+    m_SerializedExplicitTags: []
+  SourceRequiredTags:
+    m_SerializedExplicitTags: []
+  SourceBlockedTags:
+    m_SerializedExplicitTags: []
+  TargetRequiredTags:
+    m_SerializedExplicitTags: []
+  TargetBlockedTags:
+    m_SerializedExplicitTags: []
+  appliedEffects: []
+  grantedEffects: []
+  maxTargetCount: 1
+  movementInput: {fileID: -9007679612043149234, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  meleeCollisionPrefab: {fileID: 7138990350653156065, guid: bfa15dd47ee42c94092245b649090cac, type: 3}
+  startVFXPrefab: {fileID: 0}
+  collisionSpawnOffset: {x: 1.5, y: 0}
+  onHitEffect: {fileID: 11400000, guid: 0077272129276034199f9fa84e09ddb6, type: 2}
+  groundCheckDistance: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  upAttack: {fileID: 7400000, guid: a2ad24339f14bbc4996c146161497c6c, type: 2}
+  downAttack: {fileID: 7400000, guid: a2ad24339f14bbc4996c146161497c6c, type: 2}
+  defaultAttack: {fileID: 7400000, guid: a0d094d6163db384997f8f44f9ae8ab2, type: 2}

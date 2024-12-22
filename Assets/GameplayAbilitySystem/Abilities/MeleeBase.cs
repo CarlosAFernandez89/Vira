@@ -11,14 +11,14 @@ namespace GameplayAbilitySystem.Abilities
     {
         [Header("Melee Base")]
         [SerializeField] public int maxTargetCount = 1;
-        [SerializeField] private InputActionReference movementInput;
+        [SerializeField] protected InputActionReference movementInput;
         [SerializeField] public GameObject meleeCollisionPrefab;
         [SerializeField] public GameObject startVFXPrefab;
         [SerializeField] public Vector2 collisionSpawnOffset = new Vector2(0f, 0f);
-        [SerializeField] private GameplayEffectBase manaRegenerationEffect;
-
+        [SerializeField] private GameplayEffectBase onHitEffect;
+        
         [Header("Conditional Variables")] 
-        [SerializeField] private float groundCheckDistance = 3f;
+        [SerializeField] private float groundCheckDistance = 0.25f;
         [SerializeField] private LayerMask groundLayer;
         
         CapsuleCollider2D _capsuleCollider;
@@ -30,7 +30,6 @@ namespace GameplayAbilitySystem.Abilities
             base.OnAbilityGranted(owningAbilitySystemComponent);
             
             _rigidbody2D = owningAbilitySystemComponent.gameObject.GetComponent<Rigidbody2D>();
-            
         }
 
         protected override void StartAbility(GameObject user)
@@ -47,8 +46,6 @@ namespace GameplayAbilitySystem.Abilities
         protected override void ActivateAbility(GameObject user)
         {
             base.ActivateAbility(user);
-            
-            _rigidbody2D.linearVelocity = Vector2.zero;
         }
         
         // Possible animation events to call.
@@ -121,8 +118,6 @@ namespace GameplayAbilitySystem.Abilities
         
         private bool IsGrounded()
         {
-            // Implement your ground check logic here
-            // For example, using Physics2D.Raycast or checking a grounded flag
             return Physics2D.Raycast(CurrentUser.transform.position, Vector2.down, groundCheckDistance, groundLayer);
         }
 
@@ -160,13 +155,14 @@ namespace GameplayAbilitySystem.Abilities
                     {
                         asc.ApplyEffect(effect);
                     }
+                    
+                    //Apply mana regain effect to self.
+                    if (GetAbilitySystemComponent() != null)
+                    {
+                        GetAbilitySystemComponent().ApplyEffect(onHitEffect);
+                    }
                 }
                 
-                //Apply mana regain effect to self.
-                if (GetAbilitySystemComponent() != null)
-                {
-                    GetAbilitySystemComponent().ApplyEffect(manaRegenerationEffect);
-                }
             }
         }
 

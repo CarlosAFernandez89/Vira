@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1610efe26ca4c8fabcdcbfadfc0005b, type: 3}
+  m_Name: NPCBaseDialogue
+  m_EditorClassIdentifier: 
+  NodeLinks:
+  - BaseNodeGUID: 0090f737-dff0-4b0e-a44d-06104d70d0d2
+    PortName: Next
+    TargetNodeGUID: eaaf662f-94a0-4693-a057-cc900203b818
+  - BaseNodeGUID: eaaf662f-94a0-4693-a057-cc900203b818
+    PortName: That's nice.
+    TargetNodeGUID: 12df8c6e-dfcd-4cb5-9c5d-7ef88e60f792
+  - BaseNodeGUID: eaaf662f-94a0-4693-a057-cc900203b818
+    PortName: Nice to meet you!
+    TargetNodeGUID: 56521153-d48e-4925-af1e-c31652e2885b
+  - BaseNodeGUID: 56521153-d48e-4925-af1e-c31652e2885b
+    PortName: Have a nice day!
+    TargetNodeGUID: 0246159e-6990-44de-943a-953459972ecd
+  - BaseNodeGUID: 56521153-d48e-4925-af1e-c31652e2885b
+    PortName: Are you having fun?
+    TargetNodeGUID: 6106b184-3fde-4275-b109-83a69ff84449
+  - BaseNodeGUID: 6106b184-3fde-4275-b109-83a69ff84449
+    PortName: I have to go!
+    TargetNodeGUID: d395303c-cc56-4431-9ad9-6761746e2147
+  - BaseNodeGUID: 6106b184-3fde-4275-b109-83a69ff84449
+    PortName: Yes!
+    TargetNodeGUID: 4bc0ffd9-a0dd-4031-8c34-be94e9421726
+  - BaseNodeGUID: 4bc0ffd9-a0dd-4031-8c34-be94e9421726
+    PortName: Gotta go!
+    TargetNodeGUID: 327b1053-dc52-495d-b57a-414c56625f84
+  DialogueNodeData:
+  - GUID: eaaf662f-94a0-4693-a057-cc900203b818
+    DialogueName: Howdy! I am NPCBase!
+    DialoguePosition: {x: 254, y: 188}
+  - GUID: 56521153-d48e-4925-af1e-c31652e2885b
+    DialogueName: You too!
+    DialoguePosition: {x: 568, y: 324}
+  - GUID: 12df8c6e-dfcd-4cb5-9c5d-7ef88e60f792
+    DialogueName: Ok then!
+    DialoguePosition: {x: 568, y: 121}
+  - GUID: 0246159e-6990-44de-943a-953459972ecd
+    DialogueName: GoodBye!
+    DialoguePosition: {x: 883, y: 459}
+  - GUID: 6106b184-3fde-4275-b109-83a69ff84449
+    DialogueName: Yes! What about you?
+    DialoguePosition: {x: 883, y: 248}
+  - GUID: d395303c-cc56-4431-9ad9-6761746e2147
+    DialogueName: Bye!
+    DialoguePosition: {x: 1229, y: 411}
+  - GUID: 4bc0ffd9-a0dd-4031-8c34-be94e9421726
+    DialogueName: That's good to hear!
+    DialoguePosition: {x: 1229, y: 200}
+  - GUID: 327b1053-dc52-495d-b57a-414c56625f84
+    DialogueName: Bye!
+    DialoguePosition: {x: 1543, y: 200}
+  ExposedProperties: []
+  CommentBlockData: []

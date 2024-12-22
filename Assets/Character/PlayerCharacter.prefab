@@ -260,7 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4613445193745867210}
   - component: {fileID: 1731095099820618004}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: FeetCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultAbilities:
   - {fileID: 11400000, guid: 6fb3710edbcd5c74dae5c5aa0c6f03cb, type: 2}
-  - {fileID: 11400000, guid: 35c9b13a17c1a81499faa01e3a91cd93, type: 2}
+  - {fileID: 11400000, guid: 11173afd194aaeb4f9cd86a524de4b9e, type: 2}
   - {fileID: 11400000, guid: 3b002126ea3a7e0499d34b726ebca37f, type: 2}
   gameplayEffects: []
   DefaultTags:
@@ -614,6 +614,7 @@ MonoBehaviour:
   bodyCollider: {fileID: 2992057671901138928}
   moveAction: {fileID: -9007679612043149234, guid: da0199a659141034ea6865f786ee50ea, type: 3}
   jumpAction: {fileID: -208616579907308178, guid: da0199a659141034ea6865f786ee50ea, type: 3}
+  verticalDeadZone: 0.75
   isFacingRight: 0
 --- !u!114 &6898871311421931246
 MonoBehaviour:
@@ -699,12 +700,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1045430254631221487, guid: 4de879f3a82ab074f94e21fe3b68e220, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1.1875, y: 1.6875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -880,7 +881,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4034215001641090684}
   - component: {fileID: 2992057671901138928}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BodyCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -947,14 +948,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4839115712132027660}
     m_Modifications:
+    - target: {fileID: 793977856957636921, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 793977856957636921, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.11320752
+      objectReference: {fileID: 0}
+    - target: {fileID: 793977856957636921, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.11320752
+      objectReference: {fileID: 0}
+    - target: {fileID: 793977856957636921, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.11320752
+      objectReference: {fileID: 0}
+    - target: {fileID: 793977856957636921, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 767
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000818108345295233, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1514657502922745958, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
       propertyPath: m_Name
       value: CamaraManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514657502922745958, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4883960408544641633, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
       propertyPath: owningCharacter
       value: 
       objectReference: {fileID: 7622947136239430374}
+    - target: {fileID: 5342705713483991040, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491265178360549569, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7692552672183729856, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9117495657028889400, guid: b282df83372d6154bbbf79e74a5e1cec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
