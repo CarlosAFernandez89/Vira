@@ -2,7 +2,9 @@
     <Style src="project://database/Assets/Dialogue/UI/DialogueUI.uss?fileID=7433441132597879392&amp;guid=1d28c7986d824ab38c3ca09101cddfbc&amp;type=3#DialogueUI" />
     <engine:VisualElement name="dialogue-ui" class="dialogue-ui">
         <engine:VisualElement name="dialogue-container" class="dialogue-container">
-            <engine:Label name="dialogue-text" text="Dialogue Text" class="dialogue-text" />
+            <engine:ScrollView name="dialoge-container-scroll-view" style="flex-direction: row; align-content: center; align-self: stretch; justify-content: center; width: 100%; height: 100%; flex-wrap: wrap;">
+                <engine:Label name="dialogue-text" text="Dialogue Text" class="dialogue-text" style="-unity-text-align: middle-center;" />
+            </engine:ScrollView>
         </engine:VisualElement>
         <engine:VisualElement name="dialogue-choices-container" class="dialogue-choices-container" />
     </engine:VisualElement>

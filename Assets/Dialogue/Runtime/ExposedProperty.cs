@@ -10,5 +10,15 @@
 
         public string PropertyName = "New String";
         public string PropertyValue = "New Value";
+
+        public ExposedPropertyType PropertyType = ExposedPropertyType.String;
+
+        public enum ExposedPropertyType
+        {
+            String,
+            Int,
+            Float,
+            Bool,
+        }
     }
 }

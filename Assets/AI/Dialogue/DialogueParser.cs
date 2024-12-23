@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AI.NPC;
 using Dialogue.Runtime;
 using NUnit.Framework;
 using TMPro;
+using Unity.AppUI.UI;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UIElements.Button;
 
 namespace AI.Dialogue
 {
     public class DialogueParser : MonoBehaviour
     {
-        [Header("Dialogue Parser Settings")]
-        [SerializeField] private DialogueContainer dialogue;
+        private DialogueContainer _currentDialogue;
 
         [Header("Dialogue UI Elements")] 
         private VisualElement _root;
@@ -38,7 +42,10 @@ namespace AI.Dialogue
         {
             _root.style.display = DisplayStyle.Flex;
             
-            var narrativeData = dialogue.NodeLinks.First(); //Entrypoint node
+            _currentDialogue = _npcDialogue.GetCurrentDialogue();
+            Assert.IsNotNull(_currentDialogue, $"Failed to get CurrentDialogue from {gameObject.name}. Please check the NPCDialog and assign a dialogue to the list.");
+            
+            var narrativeData = _currentDialogue.NodeLinks.First(); //Entrypoint node
             ProceedToNarrative(narrativeData.TargetNodeGUID);
         }
 
@@ -49,8 +56,8 @@ namespace AI.Dialogue
 
         private void ProceedToNarrative(string narrativeDataGUID)
         {
-            string text = dialogue.DialogueNodeData.Find(x => x.GUID == narrativeDataGUID).DialogueName;
-            IEnumerable<NodeLinkData> choices = dialogue.NodeLinks.Where(x => x.BaseNodeGUID == narrativeDataGUID);
+            string text = _currentDialogue.DialogueNodeData.Find(x => x.GUID == narrativeDataGUID).DialogueName;
+            IEnumerable<NodeLinkData> choices = _currentDialogue.NodeLinks.Where(x => x.BaseNodeGUID == narrativeDataGUID);
 
             // Set Dialogue Text
             Label dialogueText = _root.Q<Label>("dialogue-text");
@@ -85,10 +92,11 @@ namespace AI.Dialogue
             FocusOnFirstDialogueOption(dialogueChoicesContainer);
 
         }
-
+        
+        
         private string ProcessProperties(string text)
         {
-            foreach (var exposedProperty in dialogue.ExposedProperties)
+            foreach (var exposedProperty in _currentDialogue.ExposedProperties)
             {
                 text = text.Replace($"[{exposedProperty.PropertyName}]", exposedProperty.PropertyValue);
             }

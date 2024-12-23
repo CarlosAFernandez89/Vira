@@ -16,6 +16,9 @@
 
 .dialogue-container {
     flex-grow: 1;
+    align-content: flex-start;
+    width: 100%;
+    justify-content: center;
 }
 
 .dialogue-text {
@@ -25,6 +28,8 @@
     -unity-text-outline-width: 1px;
     -unity-text-outline-color: rgba(0, 0, 0, 0.8);
     white-space: normal;
+    align-content: center;
+    align-self: center;
 }
 
 .dialogue-choices-container {

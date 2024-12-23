@@ -1892,6 +1892,24 @@ Transform:
   - {fileID: 968456108}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1371449036 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7553368944415514231, guid: f40d4bf2e4455fa4c865c887d4eb25b4, type: 3}
+  m_PrefabInstance: {fileID: 3195699711234484570}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1371449042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371449036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a2bacc7fc749e3b8c1ad37a21e14c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueContainer: {fileID: 11400000, guid: 892430a9a62f665448a35c18992d495d, type: 2}
 --- !u!1 &1379347994
 GameObject:
   m_ObjectHideFlags: 0
@@ -8205,10 +8223,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7717251779954589097, guid: f40d4bf2e4455fa4c865c887d4eb25b4, type: 3}
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 892430a9a62f665448a35c18992d495d, type: 2}
+    - target: {fileID: 7717251779954589097, guid: f40d4bf2e4455fa4c865c887d4eb25b4, type: 3}
+      propertyPath: dialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7553368944415514231, guid: f40d4bf2e4455fa4c865c887d4eb25b4, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1371449042}
   m_SourcePrefab: {fileID: 100100000, guid: f40d4bf2e4455fa4c865c887d4eb25b4, type: 3}
 --- !u!1001 &4876034642737514621
 PrefabInstance:

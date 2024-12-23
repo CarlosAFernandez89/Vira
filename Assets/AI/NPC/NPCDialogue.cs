@@ -1,15 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using AI.Dialogue;
 using Character;
+using Dialogue.Runtime;
 using Interface;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace AI.NPC
 {
     public class NPCDialogue : MonoBehaviour, IInteract
     {
+        
+        [Header("Dialogue")]
+        [SerializeField] private DialogueContainer dialogue;
+        [SerializeField] private int currentDialogueIndex = 0;
+        
+        [Header("Interact Options")]
+        [SerializeField] private string interactText;
+
+        private TextMeshProUGUI _interactText;
+        
         private DialogueParser _dialogueParser;
         
         private GameObject _playerCharacter;
@@ -20,6 +34,19 @@ namespace AI.NPC
         private void Awake()
         {
             _dialogueParser = gameObject.GetComponent<DialogueParser>();
+            
+            SetupInteractUI();
+        }
+
+        private void SetupInteractUI()
+        {
+            _interactText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            _interactText.text = interactText;
+        }
+
+        public DialogueContainer GetCurrentDialogue()
+        {
+            return dialogue != null ? dialogue : null;
         }
 
         public void Interact()
@@ -49,7 +76,6 @@ namespace AI.NPC
             
             _playerInput.actions.FindActionMap("Dialogue").Disable();
             _playerInput.actions.FindActionMap("Player").Enable();
-            
         }
 
         private void EndDialogue(InputAction.CallbackContext context)
@@ -81,6 +107,7 @@ namespace AI.NPC
                 _playerCharacter = other.gameObject;
                 _playerCharacter.GetComponent<PlayerActions>().SetInteractTarget(this);
                 _playerInput = _playerCharacter.GetComponent<PlayerInput>();
+                _interactText.enabled = true;
             }
         }
 
@@ -90,6 +117,7 @@ namespace AI.NPC
             {
                 _playerCharacter.GetComponent<PlayerActions>().ClearInteractTarget();
                 _playerCharacter = null;
+                _interactText.enabled = false;
             }
         }
     }
