@@ -1,6 +1,6 @@
 <engine:UXML xmlns:engine="UnityEngine.UIElements" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Dialogue/UI/DialogueChoiceUI.uss?fileID=7433441132597879392&amp;guid=d5dbae015f4e40cea62afc25990cba3b&amp;type=3#DialogueChoiceUI" />
     <engine:VisualElement name="dialogue-choice" class="dialogue-choice">
-        <engine:Button text="Choice Text" name="dialogue-choice-button" class="dialogue-choice-button dialogue-choice" />
+        <engine:Button text="Choice Text" name="dialogue-choice-button" class="dialogue-choice-button dialogue-choice" style="white-space: normal;" />
     </engine:VisualElement>
 </engine:UXML>

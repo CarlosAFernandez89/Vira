@@ -17,7 +17,8 @@ namespace AI.NPC
         
         [Header("Dialogue")]
         [SerializeField] private DialogueContainer dialogue;
-        [SerializeField] private int currentDialogueIndex = 0;
+        [SerializeField] private bool animateText = true;
+        [SerializeField] private float animateTextSpeed = 0.5f;
         
         [Header("Interact Options")]
         [SerializeField] private string interactText;
@@ -30,10 +31,13 @@ namespace AI.NPC
         private PlayerInput _playerInput;
 
         private InputAction _exitDialogue;
+        private InputAction _skipTextAnimation;
 
         private void Awake()
         {
             _dialogueParser = gameObject.GetComponent<DialogueParser>();
+            _dialogueParser.TextAnimationEnabled = animateText;
+            _dialogueParser.TextAnimationSpeed = animateTextSpeed;
             
             SetupInteractUI();
         }
@@ -89,6 +93,9 @@ namespace AI.NPC
             {
                 _exitDialogue = _playerInput.actions.FindActionMap("Dialogue").FindAction("ExitDialogue");
                 _exitDialogue.performed += EndDialogue;
+                
+                _skipTextAnimation = _playerInput.actions.FindActionMap("Dialogue").FindAction("SkipTextAnimation");
+                _skipTextAnimation.performed += _dialogueParser.FinishDialogueEarly;
             }
         }
 
@@ -97,6 +104,7 @@ namespace AI.NPC
             if (_exitDialogue != null)
             {
                 _exitDialogue.performed -= EndDialogue;
+                _skipTextAnimation.performed -= _dialogueParser.FinishDialogueEarly;
             }
         }
 

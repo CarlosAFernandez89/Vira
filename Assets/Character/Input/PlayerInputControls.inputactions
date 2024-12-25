@@ -1635,13 +1635,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Submit",
+                    "name": "SkipTextAnimation",
                     "type": "Button",
-                    "id": "488022f3-ed78-456c-812c-d9798d18111a",
+                    "id": "cf949c81-4acf-44b1-aa86-4cbcbae586af",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1669,23 +1669,23 @@
                 },
                 {
                     "name": "",
-                    "id": "d30d478a-314a-4adb-9f16-854a2ce57b05",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "56254d40-6d92-43b9-ba8e-d1b79b2e1248",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad;Touch;Joystick;XR",
-                    "action": "Submit",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "SkipTextAnimation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "a888181b-8505-44f1-806d-d2e3cfdfd2ec",
-                    "path": "<Keyboard>/space",
+                    "id": "ba2c3cdd-63a5-4d22-bccc-670a82ca957e",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Submit",
+                    "groups": ";Gamepad;Touch;Joystick;XR",
+                    "action": "SkipTextAnimation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

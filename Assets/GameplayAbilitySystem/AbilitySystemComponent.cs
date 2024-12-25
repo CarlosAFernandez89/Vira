@@ -29,6 +29,8 @@ namespace GameplayAbilitySystem
         
         private readonly Dictionary<GameplayAbilityBase, System.Action<InputAction.CallbackContext>> _delegateHandlers = new();
 
+        public Action OnDamageTaken;
+        
         private void Awake()
         {
             if (attributesComponent == null)
@@ -185,6 +187,13 @@ namespace GameplayAbilitySystem
                         //TODO: Make sure actor isn't immune to damage before applying damage
                         //We have to check if its a damage effect first. ie: Health or Mana.
                         foundAttribute.ModifyCurrentValue(effectAmount);
+
+                        // If the hp attribute is taking damage and object is still alive
+                        if (foundAttribute.name == "Health" && effectAmount < 0 && foundAttribute.currentValue > 0)
+                        {
+                            OnDamageTaken?.Invoke();
+                        }
+                        
                         break;
                     }
                     case AttributeValue.MinValue:

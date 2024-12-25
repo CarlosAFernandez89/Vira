@@ -193,7 +193,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: -876546973899608171, guid: 52f8e776cd527684aac154001a205796, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -412,10 +412,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d45a2c2b5c9427d9cabd454bbb96e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogues:
-  - {fileID: 11400000, guid: 892430a9a62f665448a35c18992d495d, type: 2}
-  - {fileID: 11400000, guid: e5da9447726aa364ab2a66f3fa479bc1, type: 2}
-  currentDialogueIndex: 0
+  dialogue: {fileID: 11400000, guid: 892430a9a62f665448a35c18992d495d, type: 2}
+  animateText: 1
+  animateTextSpeed: 2
   interactText: Talk
 --- !u!114 &5906283196031241294
 MonoBehaviour:
