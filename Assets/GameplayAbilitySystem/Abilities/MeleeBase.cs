@@ -153,7 +153,7 @@ namespace GameplayAbilitySystem.Abilities
                     if (asc == null) continue;
                     foreach (var effect in gameplayEffects)
                     {
-                        asc.ApplyEffect(effect);
+                        asc.ApplyEffect(effect, _capsuleCollider.gameObject.transform.position);
                     }
                     
                     //Apply mana regain effect to self.

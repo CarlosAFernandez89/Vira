@@ -1,4 +1,5 @@
-﻿using Unity.Behavior;
+﻿using System;
+using Unity.Behavior;
 
 namespace AI.BT.Enums
 {
@@ -8,5 +9,6 @@ namespace AI.BT.Enums
         Idle,
         Investigating,
         Attacking,
+        KnockBack
     }
 }

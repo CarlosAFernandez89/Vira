@@ -20,6 +20,7 @@ namespace AI.BT.Actions.Movement
         [SerializeReference] public BlackboardVariable<float> Speed = new BlackboardVariable<float>(1.0f);
         [SerializeReference] public BlackboardVariable<float> DistanceThreshold = new BlackboardVariable<float>(0.2f);
         [SerializeReference] public BlackboardVariable<NPCMovementType> NPCMovement = new BlackboardVariable<NPCMovementType>();
+        [SerializeReference] public BlackboardVariable<NPCState> _NPCState = new BlackboardVariable<NPCState>();
         
         private float m_PreviousStoppingDistance;
         private Vector3 m_LastTargetPosition;
@@ -42,6 +43,11 @@ namespace AI.BT.Actions.Movement
             if (Agent.Value == null || Target.Value == null || _rigidbody2D == null)
             {
                 return Status.Failure;
+            }
+
+            if (_NPCState == NPCState.KnockBack)
+            {
+                return Status.Success;
             }
             
             // Check if the target position has changed.

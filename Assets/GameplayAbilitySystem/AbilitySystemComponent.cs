@@ -29,7 +29,7 @@ namespace GameplayAbilitySystem
         
         private readonly Dictionary<GameplayAbilityBase, System.Action<InputAction.CallbackContext>> _delegateHandlers = new();
 
-        public Action OnDamageTaken;
+        public Action<Vector3, float> OnDamageTaken;
         
         private void Awake()
         {
@@ -63,7 +63,7 @@ namespace GameplayAbilitySystem
 
             foreach (var gameplayEffect in gameplayEffects)
             {
-                ApplyEffect(gameplayEffect);
+                ApplyEffect(gameplayEffect, Vector3.zero);
             }
             
         }
@@ -116,11 +116,12 @@ namespace GameplayAbilitySystem
         /// Applies a gameplay effect to the AbilitySystemComponent
         /// </summary>
         /// <param name="effect">The effect to apply</param>
-        public void ApplyEffect(GameplayEffectBase effect)
+        /// <param name="hitLocation">The location the hit came from</param>
+        public void ApplyEffect(GameplayEffectBase effect, Vector3 hitLocation = default(Vector3))
         {
             if (Mathf.Approximately(effect.duration, -1))
             {
-                ModifyAttribute(effect);
+                ModifyAttribute(effect, inHitLocation: hitLocation);
             }
             else
             {
@@ -167,7 +168,7 @@ namespace GameplayAbilitySystem
             }
         }
     
-        private void ModifyAttribute(GameplayEffectBase effect, bool addEffect = true)
+        private void ModifyAttribute(GameplayEffectBase effect, bool addEffect = true, Vector3 inHitLocation = default)
         {
             // Determine the amount to modify (negative if addEffect is false)
             float effectAmount = addEffect ? effect.effectAmount : -effect.effectAmount;
@@ -191,7 +192,7 @@ namespace GameplayAbilitySystem
                         // If the hp attribute is taking damage and object is still alive
                         if (foundAttribute.name == "Health" && effectAmount < 0 && foundAttribute.currentValue > 0)
                         {
-                            OnDamageTaken?.Invoke();
+                            OnDamageTaken?.Invoke(inHitLocation, effectAmount);
                         }
                         
                         break;

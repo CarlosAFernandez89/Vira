@@ -48,5 +48,8 @@ TagManager:
   - name: Background
     uniqueID: 2152146889
     locked: 0
+  - name: CameraSortingLayer
+    uniqueID: 253097301
+    locked: 0
   m_RenderingLayers:
   - Default

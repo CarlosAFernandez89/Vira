@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbdb153809dad149a5b8b957d2f0b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  behaviorGraphAgent: {fileID: 892176703743058081}
   _damageFlashColor: {r: 5.992156, g: 0.53703266, b: 0.53703266, a: 0.8666667}
   _damageFlashCurve:
     serializedVersion: 2
@@ -130,6 +131,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _shockWavePrefab: {fileID: 3030323523914184161, guid: f2ca6ecbc561d7443853974d9d37ce8a, type: 3}
+  _shockWaveTime: 0.15
+  _knockBackDuration: 0.5
 --- !u!114 &278789193892210696
 MonoBehaviour:
   m_ObjectHideFlags: 0
